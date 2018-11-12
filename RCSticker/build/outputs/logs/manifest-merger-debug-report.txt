@@ -1,0 +1,47 @@
+-- Merging decision tree log ---
+manifest
+ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+	package
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:2:5-35
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:1-12:12
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:4:5-10:19
+	android:label
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:4:18-50
+activity#cn.rongcloud.sticker.mysticker.MyStickerActivity
+ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:6:9-8:52
+	android:screenOrientation
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:8:13-49
+	android:name
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml:7:13-56
+uses-sdk
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		ADDED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml
+		INJECTED from F:\lgh\code\HoChat\RCSticker\src\main\AndroidManifest.xml

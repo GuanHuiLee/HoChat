@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="cn.rongcloud.sticker"
+    android:versionCode="2018101821"
+    android:versionName="2.9.7 Stable" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="27" />
+
+    <application android:label="@string/app_name" >
+        <activity
+            android:name="cn.rongcloud.sticker.mysticker.MyStickerActivity"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

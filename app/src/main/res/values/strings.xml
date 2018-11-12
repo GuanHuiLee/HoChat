@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">HoChat</string>
+    <string name="str_tab_contacts">联系人</string>
+    <string name="str_tab_chat">消息</string>
+    <string name="str_tab_find">发现</string>
+    <string name="str_tab_mine">我的</string>
+    <string name="no_friends">暂无好友</string>
+    <string name="new_friends">新的朋友</string>
+    <string name="group">群组</string>
+    <string name="public_service">公众号</string>
+</resources>
