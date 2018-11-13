@@ -24,7 +24,7 @@ public final class R {
 
         public static int allowEmpty = 0x7f040001;
         public static int bankground = 0x7f040002;
-        public static int content_1 = 0x7f040003;
+        public static int content = 0x7f040003;
         public static int gpvGridColor = 0x7f040004;
         public static int gpvLineColor = 0x7f040005;
         public static int gpvLineWidth = 0x7f040006;
@@ -962,7 +962,7 @@ public final class R {
 
         public static int[] ActionBarView = { 0x7f040002, 0x7f040003, 0x7f04000d, 0x7f040010 };
         public static int ActionBarView_bankground = 0;
-        public static int ActionBarView_content_1 = 1;
+        public static int ActionBarView_content = 1;
         public static int ActionBarView_isBackFinish = 2;
         public static int ActionBarView_leftIcon = 3;
         public static int[] FloatingLabelTextView = { 0x7f040001, 0x7f04000c, 0x7f040015, 0x7f040016, 0x7f040017 };

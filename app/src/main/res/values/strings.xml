@@ -8,4 +8,14 @@
     <string name="new_friends">新的朋友</string>
     <string name="group">群组</string>
     <string name="public_service">公众号</string>
+    <string name="user_details">用户详情</string>
+    <string name="setdisplayname">设置备注</string>
+    <string name="start_chat">发起会话</string>
+    <string name="start_voice">语音通话</string>
+    <string name="add_friend">视频通话</string>
+    <string name="start_video">视频聊天</string>
+    <string name="ac_contact_nick_name">昵称</string>
+    <string name="main_customer">意见反馈</string>
+    <string name="de_actionbar_system">"系统消息"</string>
+    <string name="de_actionbar_sub_defult">"聊天"</string>
 </resources>

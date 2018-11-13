@@ -72,9 +72,9 @@ ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:16:5-81
 application
 ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:18:5-81:19
 meta-data#RONG_CLOUD_APP_KEY
-ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:21:9-23:43
+ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:21:9-23:45
 	android:value
-		ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:23:13-40
+		ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:23:13-42
 	android:name
 		ADDED from F:\lgh\code\HoChat\IMLib\AndroidManifest.xml:22:13-46
 service#io.rong.imlib.ipc.RongService

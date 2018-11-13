@@ -22,7 +22,6 @@ attr RCMaxWidth
 attr RCMinShortSideSize
 attr RCShape
 attr RCStyle
-attr coordinatorLayoutStyle
 attr font
 attr fontProviderAuthority
 attr fontProviderCerts
@@ -32,14 +31,6 @@ attr fontProviderPackage
 attr fontProviderQuery
 attr fontStyle
 attr fontWeight
-attr keylines
-attr layout_anchor
-attr layout_anchorGravity
-attr layout_behavior
-attr layout_dodgeInsetEdges
-attr layout_insetEdge
-attr layout_keyline
-attr statusBarBackground
 bool abc_action_bar_embed_tabs
 bool rc_enable_mentioned_message
 bool rc_enable_message_recall
@@ -635,7 +626,6 @@ id actions
 id async
 id back
 id blocking
-id bottom
 id camera_mask
 id cancel_action
 id catalog_listview
@@ -643,7 +633,6 @@ id catalog_window
 id checkbox
 id chronometer
 id description
-id end
 id end_padder
 id enter
 id evaluate_text
@@ -666,7 +655,6 @@ id iv_yes
 id layout_head
 id layout_praise
 id layout_praise_area
-id left
 id letter
 id line1
 id line3
@@ -676,7 +664,6 @@ id media_actions
 id memberItem
 id message_check
 id name
-id none
 id normal
 id notification_background
 id notification_main_column
@@ -913,7 +900,6 @@ id real_time_location_bar
 id real_time_location_text
 id refresh_loading_indicator
 id rel_group_intro
-id right
 id right_icon
 id right_side
 id rl_popup_dialog_prompt_message
@@ -921,16 +907,13 @@ id rl_popup_dialog_title
 id select_check
 id selected
 id send
-id start
 id status_bar_latest_event_content
-id tag_transition_group
 id text
 id text2
 id time
 id title
 id toolbar_bottom
 id toolbar_top
-id top
 id tv_divider_message
 id tv_line
 id tv_prompt
@@ -1518,7 +1501,6 @@ style TextAppearance_Compat_Notification_Title
 style TextAppearance_Compat_Notification_Title_Media
 style Widget_Compat_NotificationActionContainer
 style Widget_Compat_NotificationActionText
-style Widget_Support_CoordinatorLayout
 style horizontal_light_thin_divider
 style rc_ac_file_manager_image_style
 style rc_ac_file_manager_line
@@ -1529,9 +1511,7 @@ style rc_pb_file_download_progress
 style vertical_light_thin_divider
 styleable AsyncImageView RCCornerRadius RCDefDrawable RCMask RCMinShortSideSize RCShape
 styleable AutoLinkTextView RCMaxWidth
-styleable CoordinatorLayout keylines statusBarBackground
-styleable CoordinatorLayout_Layout android_layout_gravity layout_anchor layout_anchorGravity layout_behavior layout_dodgeInsetEdges layout_insetEdge layout_keyline
 styleable FontFamily fontProviderAuthority fontProviderCerts fontProviderFetchStrategy fontProviderFetchTimeout fontProviderPackage fontProviderQuery
-styleable FontFamilyFont android_font android_fontStyle android_fontWeight font fontStyle fontWeight
+styleable FontFamilyFont font fontStyle fontWeight
 styleable RongExtension RCStyle
 xml rc_file_path

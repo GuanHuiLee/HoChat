@@ -7,7 +7,7 @@ anim actionsheet_dialog_in
 anim actionsheet_dialog_out
 attr allowEmpty
 attr bankground
-attr content_1
+attr content
 attr gpvGridColor
 attr gpvLineColor
 attr gpvLineWidth
@@ -907,7 +907,7 @@ style text_red_16
 style text_red_28
 style text_white_16
 style text_white_28
-styleable ActionBarView bankground content_1 isBackFinish leftIcon
+styleable ActionBarView bankground content isBackFinish leftIcon
 styleable FloatingLabelTextView allowEmpty hint textSize validationMessage validatorType
 styleable Jrmf_RoundImageView jrmf_borderRadius jrmf_type
 styleable Ry_CircleImageView ry_civ_border_color ry_civ_border_overlay ry_civ_border_width ry_civ_fill_color

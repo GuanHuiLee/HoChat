@@ -39,7 +39,6 @@ public final class R {
         public static int RCMinShortSideSize = 0x7f040007;
         public static int RCShape = 0x7f040008;
         public static int RCStyle = 0x7f040009;
-        public static int coordinatorLayoutStyle = 0x7f04000a;
         public static int font = 0x7f04000b;
         public static int fontProviderAuthority = 0x7f04000c;
         public static int fontProviderCerts = 0x7f04000d;
@@ -49,14 +48,6 @@ public final class R {
         public static int fontProviderQuery = 0x7f040011;
         public static int fontStyle = 0x7f040012;
         public static int fontWeight = 0x7f040013;
-        public static int keylines = 0x7f040014;
-        public static int layout_anchor = 0x7f040015;
-        public static int layout_anchorGravity = 0x7f040016;
-        public static int layout_behavior = 0x7f040017;
-        public static int layout_dodgeInsetEdges = 0x7f040018;
-        public static int layout_insetEdge = 0x7f040019;
-        public static int layout_keyline = 0x7f04001a;
-        public static int statusBarBackground = 0x7f04001b;
     }
     public static final class bool {
         private bool() {}
@@ -672,7 +663,6 @@ public final class R {
         public static int async = 0x7f0c000f;
         public static int back = 0x7f0c0010;
         public static int blocking = 0x7f0c0011;
-        public static int bottom = 0x7f0c0012;
         public static int camera_mask = 0x7f0c0019;
         public static int cancel_action = 0x7f0c001a;
         public static int catalog_listview = 0x7f0c001b;
@@ -680,7 +670,6 @@ public final class R {
         public static int checkbox = 0x7f0c001d;
         public static int chronometer = 0x7f0c001e;
         public static int description = 0x7f0c001f;
-        public static int end = 0x7f0c0021;
         public static int end_padder = 0x7f0c0022;
         public static int enter = 0x7f0c0023;
         public static int evaluate_text = 0x7f0c0025;
@@ -703,7 +692,6 @@ public final class R {
         public static int layout_head = 0x7f0c0041;
         public static int layout_praise = 0x7f0c0042;
         public static int layout_praise_area = 0x7f0c0043;
-        public static int left = 0x7f0c0044;
         public static int letter = 0x7f0c0045;
         public static int line1 = 0x7f0c0046;
         public static int line3 = 0x7f0c0047;
@@ -713,7 +701,6 @@ public final class R {
         public static int memberItem = 0x7f0c004d;
         public static int message_check = 0x7f0c004e;
         public static int name = 0x7f0c004f;
-        public static int none = 0x7f0c0050;
         public static int normal = 0x7f0c0051;
         public static int notification_background = 0x7f0c0052;
         public static int notification_main_column = 0x7f0c0053;
@@ -950,7 +937,6 @@ public final class R {
         public static int real_time_location_text = 0x7f0c0170;
         public static int refresh_loading_indicator = 0x7f0c0171;
         public static int rel_group_intro = 0x7f0c0172;
-        public static int right = 0x7f0c0174;
         public static int right_icon = 0x7f0c0175;
         public static int right_side = 0x7f0c0176;
         public static int rl_popup_dialog_prompt_message = 0x7f0c0178;
@@ -958,16 +944,13 @@ public final class R {
         public static int select_check = 0x7f0c017c;
         public static int selected = 0x7f0c017d;
         public static int send = 0x7f0c017e;
-        public static int start = 0x7f0c017f;
         public static int status_bar_latest_event_content = 0x7f0c0180;
-        public static int tag_transition_group = 0x7f0c0181;
         public static int text = 0x7f0c0182;
         public static int text2 = 0x7f0c0183;
         public static int time = 0x7f0c0184;
         public static int title = 0x7f0c0185;
         public static int toolbar_bottom = 0x7f0c0186;
         public static int toolbar_top = 0x7f0c0187;
-        public static int top = 0x7f0c0188;
         public static int tv_divider_message = 0x7f0c018d;
         public static int tv_line = 0x7f0c018f;
         public static int tv_prompt = 0x7f0c0190;
@@ -1571,7 +1554,6 @@ public final class R {
         public static int TextAppearance_Compat_Notification_Title_Media = 0x7f160017;
         public static int Widget_Compat_NotificationActionContainer = 0x7f160018;
         public static int Widget_Compat_NotificationActionText = 0x7f160019;
-        public static int Widget_Support_CoordinatorLayout = 0x7f16001a;
         public static int horizontal_light_thin_divider = 0x7f16001d;
         public static int rc_ac_file_manager_image_style = 0x7f16001e;
         public static int rc_ac_file_manager_line = 0x7f16001f;
@@ -1592,17 +1574,6 @@ public final class R {
         public static int AsyncImageView_RCShape = 4;
         public static int[] AutoLinkTextView = { 0x7f040006 };
         public static int AutoLinkTextView_RCMaxWidth = 0;
-        public static int[] CoordinatorLayout = { 0x7f040014, 0x7f04001b };
-        public static int CoordinatorLayout_keylines = 0;
-        public static int CoordinatorLayout_statusBarBackground = 1;
-        public static int[] CoordinatorLayout_Layout = { 0x10100b3, 0x7f040015, 0x7f040016, 0x7f040017, 0x7f040018, 0x7f040019, 0x7f04001a };
-        public static int CoordinatorLayout_Layout_android_layout_gravity = 0;
-        public static int CoordinatorLayout_Layout_layout_anchor = 1;
-        public static int CoordinatorLayout_Layout_layout_anchorGravity = 2;
-        public static int CoordinatorLayout_Layout_layout_behavior = 3;
-        public static int CoordinatorLayout_Layout_layout_dodgeInsetEdges = 4;
-        public static int CoordinatorLayout_Layout_layout_insetEdge = 5;
-        public static int CoordinatorLayout_Layout_layout_keyline = 6;
         public static int[] FontFamily = { 0x7f04000c, 0x7f04000d, 0x7f04000e, 0x7f04000f, 0x7f040010, 0x7f040011 };
         public static int FontFamily_fontProviderAuthority = 0;
         public static int FontFamily_fontProviderCerts = 1;

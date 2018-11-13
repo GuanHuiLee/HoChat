@@ -32,8 +32,8 @@ public final class R {
 
         public static int notification_action_color_filter = 0x7f060001;
         public static int notification_icon_bg_color = 0x7f060002;
-        public static int ripple_material_light = 0x7f060003;
-        public static int secondary_text_default_material_light = 0x7f060004;
+        public static int ripple_material_light = 0x7f060005;
+        public static int secondary_text_default_material_light = 0x7f060007;
     }
     public static final class dimen {
         private dimen() {}
@@ -78,47 +78,46 @@ public final class R {
     public static final class id {
         private id() {}
 
-        public static int action_container = 0x7f0c0001;
-        public static int action_divider = 0x7f0c0002;
-        public static int action_image = 0x7f0c0003;
-        public static int action_text = 0x7f0c0004;
-        public static int actions = 0x7f0c0005;
-        public static int async = 0x7f0c0006;
-        public static int blocking = 0x7f0c0007;
-        public static int chronometer = 0x7f0c0008;
-        public static int forever = 0x7f0c0009;
-        public static int icon = 0x7f0c000a;
-        public static int icon_group = 0x7f0c000b;
-        public static int info = 0x7f0c000c;
-        public static int italic = 0x7f0c000d;
-        public static int line1 = 0x7f0c000e;
-        public static int line3 = 0x7f0c000f;
-        public static int normal = 0x7f0c0010;
-        public static int notification_background = 0x7f0c0011;
-        public static int notification_main_column = 0x7f0c0012;
-        public static int notification_main_column_container = 0x7f0c0013;
-        public static int right_icon = 0x7f0c0014;
-        public static int right_side = 0x7f0c0015;
-        public static int tag_transition_group = 0x7f0c0016;
-        public static int text = 0x7f0c0017;
-        public static int text2 = 0x7f0c0018;
-        public static int time = 0x7f0c0019;
-        public static int title = 0x7f0c001a;
+        public static int action_container = 0x7f0c0002;
+        public static int action_divider = 0x7f0c0003;
+        public static int action_image = 0x7f0c0004;
+        public static int action_text = 0x7f0c0005;
+        public static int actions = 0x7f0c0006;
+        public static int async = 0x7f0c0007;
+        public static int blocking = 0x7f0c0008;
+        public static int chronometer = 0x7f0c000a;
+        public static int forever = 0x7f0c000c;
+        public static int icon = 0x7f0c000d;
+        public static int icon_group = 0x7f0c000e;
+        public static int info = 0x7f0c000f;
+        public static int italic = 0x7f0c0010;
+        public static int line1 = 0x7f0c0011;
+        public static int line3 = 0x7f0c0012;
+        public static int normal = 0x7f0c0014;
+        public static int notification_background = 0x7f0c0015;
+        public static int notification_main_column = 0x7f0c0016;
+        public static int notification_main_column_container = 0x7f0c0017;
+        public static int right_icon = 0x7f0c0018;
+        public static int right_side = 0x7f0c0019;
+        public static int text = 0x7f0c001b;
+        public static int text2 = 0x7f0c001c;
+        public static int time = 0x7f0c001d;
+        public static int title = 0x7f0c001e;
     }
     public static final class integer {
         private integer() {}
 
-        public static int status_bar_notification_info_maxnum = 0x7f0d0001;
+        public static int status_bar_notification_info_maxnum = 0x7f0d0002;
     }
     public static final class layout {
         private layout() {}
 
         public static int notification_action = 0x7f0f0001;
         public static int notification_action_tombstone = 0x7f0f0002;
-        public static int notification_template_custom_big = 0x7f0f0003;
-        public static int notification_template_icon_group = 0x7f0f0004;
-        public static int notification_template_part_chronometer = 0x7f0f0005;
-        public static int notification_template_part_time = 0x7f0f0006;
+        public static int notification_template_custom_big = 0x7f0f0009;
+        public static int notification_template_icon_group = 0x7f0f000a;
+        public static int notification_template_part_chronometer = 0x7f0f000e;
+        public static int notification_template_part_time = 0x7f0f000f;
     }
     public static final class string {
         private string() {}
@@ -130,11 +129,11 @@ public final class R {
 
         public static int TextAppearance_Compat_Notification = 0x7f160001;
         public static int TextAppearance_Compat_Notification_Info = 0x7f160002;
-        public static int TextAppearance_Compat_Notification_Line2 = 0x7f160003;
-        public static int TextAppearance_Compat_Notification_Time = 0x7f160004;
-        public static int TextAppearance_Compat_Notification_Title = 0x7f160005;
-        public static int Widget_Compat_NotificationActionContainer = 0x7f160006;
-        public static int Widget_Compat_NotificationActionText = 0x7f160007;
+        public static int TextAppearance_Compat_Notification_Line2 = 0x7f160004;
+        public static int TextAppearance_Compat_Notification_Time = 0x7f160007;
+        public static int TextAppearance_Compat_Notification_Title = 0x7f160009;
+        public static int Widget_Compat_NotificationActionContainer = 0x7f16000b;
+        public static int Widget_Compat_NotificationActionText = 0x7f16000c;
     }
     public static final class styleable {
         private styleable() {}
@@ -146,12 +145,9 @@ public final class R {
         public static int FontFamily_fontProviderFetchTimeout = 3;
         public static int FontFamily_fontProviderPackage = 4;
         public static int FontFamily_fontProviderQuery = 5;
-        public static int[] FontFamilyFont = { 0x1010532, 0x101053f, 0x1010533, 0x7f040001, 0x7f040008, 0x7f040009 };
-        public static int FontFamilyFont_android_font = 0;
-        public static int FontFamilyFont_android_fontStyle = 1;
-        public static int FontFamilyFont_android_fontWeight = 2;
-        public static int FontFamilyFont_font = 3;
-        public static int FontFamilyFont_fontStyle = 4;
-        public static int FontFamilyFont_fontWeight = 5;
+        public static int[] FontFamilyFont = { 0x7f040001, 0x7f040008, 0x7f040009 };
+        public static int FontFamilyFont_font = 0;
+        public static int FontFamilyFont_fontStyle = 1;
+        public static int FontFamilyFont_fontWeight = 2;
     }
 }

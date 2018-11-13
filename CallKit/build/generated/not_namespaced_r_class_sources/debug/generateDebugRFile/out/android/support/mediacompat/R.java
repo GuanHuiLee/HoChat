@@ -107,7 +107,6 @@ public final class R {
         public static int right_icon = 0x7f0c0175;
         public static int right_side = 0x7f0c0176;
         public static int status_bar_latest_event_content = 0x7f0c0180;
-        public static int tag_transition_group = 0x7f0c0181;
         public static int text = 0x7f0c0182;
         public static int text2 = 0x7f0c0183;
         public static int time = 0x7f0c0184;

@@ -1,20 +1,17 @@
 package com.zgg.hochat.ui.fragment;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -22,40 +19,51 @@ import android.widget.TextView;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.FriendListAdapter;
+import com.zgg.hochat.base.BaseFragment;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.ui.activity.UserDetailActivity;
+import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
+import com.zgg.hochat.widget.pinyin.PinyinComparator;
+import com.zgg.hochat.widget.pinyin.SideBar;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import butterknife.BindView;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.mention.MemberMentionedActivity;
-import io.rong.imkit.mention.SideBar;
 import io.rong.imkit.tools.CharacterParser;
 import io.rong.imlib.model.UserInfo;
+import retrofit2.http.POST;
 
 
 /**
  * tab 2 通讯录的 Fragment
  * Created by Bob on 2015/1/25.
  */
-public class ContactsFragment extends Fragment implements View.OnClickListener {
+public class ContactsFragment extends BaseFragment implements View.OnClickListener {
+    @BindView(R.id.list_view)
+    ListView mListView;
+    @BindView(R.id.sidebar)
+    SideBar mSidBar;
+    @BindView(R.id.tv_no_friend)
+    TextView mNoFriends;
+    /**
+     * 中部展示的字母提示
+     */
+    @BindView(R.id.group_dialog)
+    TextView mDialogTextView;
+
+    TextView mUnreadTextView;
 
     public static final String TAG = ContactsFragment.class.getName();
     private SelectableRoundedImageView mSelectableRoundedImageView;
     private TextView mNameTextView;
-    private TextView mNoFriends;
-    private TextView mUnreadTextView;
     private View mHeadView;
-    private ListView mListView;
-    private MemberMentionedActivity.PinyinComparator mPinyinComparator;
-    private SideBar mSidBar;
-    /**
-     * 中部展示的字母提示
-     */
-    private TextView mDialogTextView;
+    private PinyinComparator mPinyinComparator;
+
 
     private List<Friend> mFriendList;
     private List<Friend> mFilteredFriendList;
@@ -79,67 +87,28 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_address, container, false);
-        initView(view);
-        initData();
         updateUI();
         refreshUIListener();
         return view;
     }
 
     private void startFriendDetailsPage(Friend friend) {
-//        Intent intent = new Intent(getActivity(), UserDetailActivity.class);
-//        intent.putExtra("type", CLICK_CONTACT_FRAGMENT_FRIEND);
-//        intent.putExtra("friend", friend);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), UserDetailActivity.class);
+        intent.putExtra("type", CLICK_CONTACT_FRAGMENT_FRIEND);
+        intent.putExtra("friend", friend);
+        startActivity(intent);
     }
 
-    private void initView(View view) {
-        mListView = (ListView) view.findViewById(R.id.listview);
-        mNoFriends = (TextView) view.findViewById(R.id.show_no_friend);
-        mSidBar = (SideBar) view.findViewById(R.id.sidrbar);
-        mDialogTextView = (TextView) view.findViewById(R.id.group_dialog);
-        mSidBar.setTextView(mDialogTextView);
-        LayoutInflater mLayoutInflater = LayoutInflater.from(getActivity());
-        mHeadView = mLayoutInflater.inflate(R.layout.item_contact_list_header,
-                null);
-        mUnreadTextView = (TextView) mHeadView.findViewById(R.id.tv_unread);
-        RelativeLayout newFriendsLayout = (RelativeLayout) mHeadView.findViewById(R.id.re_newfriends);
-        RelativeLayout groupLayout = (RelativeLayout) mHeadView.findViewById(R.id.re_chatroom);
-        RelativeLayout publicServiceLayout = (RelativeLayout) mHeadView.findViewById(R.id.publicservice);
-        RelativeLayout selfLayout = (RelativeLayout) mHeadView.findViewById(R.id.contact_me_item);
-        mSelectableRoundedImageView = (SelectableRoundedImageView) mHeadView.findViewById(R.id.contact_me_img);
-        mNameTextView = (TextView) mHeadView.findViewById(R.id.contact_me_name);
-        updatePersonalUI();
-        mListView.addHeaderView(mHeadView);
-        mNoFriends.setVisibility(View.VISIBLE);
 
-        selfLayout.setOnClickListener(this);
-        groupLayout.setOnClickListener(this);
-        newFriendsLayout.setOnClickListener(this);
-        publicServiceLayout.setOnClickListener(this);
-        //设置右侧触摸监听
-        mSidBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
-
-            @Override
-            public void onTouchingLetterChanged(String s) {
-                //该字母首次出现的位置
-                int position = mFriendListAdapter.getPositionForSection(s.charAt(0));
-                if (position != -1) {
-                    mListView.setSelection(position);
-                }
-
-            }
-        });
-    }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         mFriendList = new ArrayList<>();
         FriendListAdapter adapter = new FriendListAdapter(getActivity(), mFriendList);
         mListView.setAdapter(adapter);
         mFilteredFriendList = new ArrayList<>();
         //实例化汉字转拼音类
         mCharacterParser = CharacterParser.getInstance();
-//        mPinyinComparator = PinyinComparator.getInstance();
+        mPinyinComparator = PinyinComparator.getInstance();
     }
 
 
@@ -250,6 +219,41 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    protected void initUI() {
+        mSidBar.setTextView(mDialogTextView);
+        LayoutInflater mLayoutInflater = LayoutInflater.from(getActivity());
+        mHeadView = mLayoutInflater.inflate(R.layout.item_contact_list_header, null);
+        mUnreadTextView = mHeadView.findViewById(R.id.tv_unread);
+        RelativeLayout newFriendsLayout = (RelativeLayout) mHeadView.findViewById(R.id.re_newfriends);
+        RelativeLayout groupLayout = (RelativeLayout) mHeadView.findViewById(R.id.re_chatroom);
+        RelativeLayout publicServiceLayout = (RelativeLayout) mHeadView.findViewById(R.id.publicservice);
+        RelativeLayout selfLayout = (RelativeLayout) mHeadView.findViewById(R.id.contact_me_item);
+        mSelectableRoundedImageView = (SelectableRoundedImageView) mHeadView.findViewById(R.id.contact_me_img);
+        mNameTextView = (TextView) mHeadView.findViewById(R.id.contact_me_name);
+        updatePersonalUI();
+        mListView.addHeaderView(mHeadView);
+        mNoFriends.setVisibility(View.VISIBLE);
+
+        selfLayout.setOnClickListener(this);
+        groupLayout.setOnClickListener(this);
+        newFriendsLayout.setOnClickListener(this);
+        publicServiceLayout.setOnClickListener(this);
+        //设置右侧触摸监听
+        mSidBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
+
+            @Override
+            public void onTouchingLetterChanged(String s) {
+                //该字母首次出现的位置
+                int position = mFriendListAdapter.getPositionForSection(s.charAt(0));
+                if (position != -1) {
+                    mListView.setSelection(position);
+                }
+
+            }
+        });
+    }
+
     private void updateUI() {
 //        SealUserInfoManager.getInstance().getFriends(new SealUserInfoManager.ResultCallback<List<Friend>>() {
 //            @Override
@@ -314,16 +318,14 @@ public class ContactsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void updatePersonalUI() {
-//        SharedPreferences sp = SealAppContext.getInstance().getContext().getSharedPreferences("config", Context.MODE_PRIVATE);
-//        mId = sp.getString(SealConst.SEALTALK_LOGIN_ID, "");
-//        mCacheName = sp.getString(SealConst.SEALTALK_LOGIN_NAME, "");
-//        final String header = sp.getString(SealConst.SEALTALK_LOGING_PORTRAIT, "");
-//        mNameTextView.setText(mCacheName);
-//        if (!TextUtils.isEmpty(mId)) {
+        mId = DataUtil.getUser();
+        mCacheName = mId;
+        mNameTextView.setText(mCacheName);
+        if (!TextUtils.isEmpty(mId)) {
 //            UserInfo userInfo = new UserInfo(mId, mCacheName, Uri.parse(header));
 //            String portraitUri = SealUserInfoManager.getInstance().getPortraitUri(userInfo);
 //            ImageLoader.getInstance().displayImage(portraitUri, mSelectableRoundedImageView, App.getOptions());
-//        }
+        }
     }
 
     private void handleFriendDataForSort() {

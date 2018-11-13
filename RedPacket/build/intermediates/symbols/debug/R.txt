@@ -6,7 +6,7 @@ int anim actionsheet_dialog_in 0x7f010005
 int anim actionsheet_dialog_out 0x7f010006
 int attr allowEmpty 0x7f040001
 int attr bankground 0x7f040002
-int attr content_1 0x7f040003
+int attr content 0x7f040003
 int attr gpvGridColor 0x7f040004
 int attr gpvLineColor 0x7f040005
 int attr gpvLineWidth 0x7f040006
@@ -908,7 +908,7 @@ int style text_white_16 0x7f160016
 int style text_white_28 0x7f160017
 int[] styleable ActionBarView { 0x7f040002, 0x7f040003, 0x7f04000d, 0x7f040010 }
 int styleable ActionBarView_bankground 0
-int styleable ActionBarView_content_1 1
+int styleable ActionBarView_content 1
 int styleable ActionBarView_isBackFinish 2
 int styleable ActionBarView_leftIcon 3
 int[] styleable FloatingLabelTextView { 0x7f040001, 0x7f04000c, 0x7f040015, 0x7f040016, 0x7f040017 }

@@ -27,7 +27,6 @@
     </style>
 
 
-
     <style name="WinDialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -77,6 +76,7 @@
         <item name="android:layout_height">6dp</item>
         <!-- <item name="android:visibility">gone</item>-->
     </style>
+
     <style name="DemoMainNewMassage">
         <item name="android:background">@drawable/rc_unread_count_bg</item>
         <item name="android:gravity">center</item>
@@ -88,6 +88,7 @@
         <item name="android:layout_height">18dp</item>
         <!-- <item name="android:visibility">gone</item>-->
     </style>
+
     <style name="DemoAddressNewMassage">
         <item name="android:background">@drawable/rc_unread_count_bg</item>
         <item name="android:gravity">center</item>
@@ -148,15 +149,15 @@
     </style>
     <!--SWITCH-->
     <!--<style name="SwitchButtonMD">-->
-        <!--<item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>-->
-        <!--<item name="kswBackColor">@color/ksw_md_back_color</item>-->
-        <!--<item name="kswBackMeasureRatio">1.45</item>-->
-        <!--<item name="kswThumbMarginLeft">-16dp</item>-->
-        <!--<item name="kswThumbMarginTop">-14dp</item>-->
-        <!--<item name="kswThumbMarginRight">-16dp</item>-->
-        <!--<item name="kswThumbMarginBottom">-14dp</item>-->
-        <!--<item name="kswThumbWidth">@dimen/ksw_md_thumb_ripple_size</item>-->
-        <!--<item name="kswThumbHeight">@dimen/ksw_md_thumb_ripple_size</item>-->
+    <!--<item name="kswThumbDrawable">@drawable/ksw_md_thumb</item>-->
+    <!--<item name="kswBackColor">@color/ksw_md_back_color</item>-->
+    <!--<item name="kswBackMeasureRatio">1.45</item>-->
+    <!--<item name="kswThumbMarginLeft">-16dp</item>-->
+    <!--<item name="kswThumbMarginTop">-14dp</item>-->
+    <!--<item name="kswThumbMarginRight">-16dp</item>-->
+    <!--<item name="kswThumbMarginBottom">-14dp</item>-->
+    <!--<item name="kswThumbWidth">@dimen/ksw_md_thumb_ripple_size</item>-->
+    <!--<item name="kswThumbHeight">@dimen/ksw_md_thumb_ripple_size</item>-->
     <!--</style>-->
 
     <style name="SwitchButtonStyle">
@@ -187,12 +188,14 @@
         <item name="android:textColor">#999999</item>
         <item name="android:background">#ffffff</item>
     </style>
+
     <style name="ac_search_list_view_item_more">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textColor">#7ca1c9</item>
     </style>
+
     <style name="ac_search_list_view_divider">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">1dp</item>
@@ -200,11 +203,13 @@
         <item name="android:layout_marginLeft">14dp</item>
         <item name="android:layout_marginRight">14dp</item>
     </style>
+
     <style name="ac_search_part_divider_high">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">14dp</item>
         <item name="android:background">#f0f0f6</item>
     </style>
+
     <style name="ac_search_no_results">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -228,4 +233,34 @@
     <color name="group_list_black_textview">#353535</color>
     <color name="group_list_gray">#999999</color>
     <color name="de_title_bg">#0195ff</color>
+
+
+    <!--输入框基本样式-->
+    <style name="EditBaseStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/color_grey_666666</item>
+        <item name="android:textColorHint">@color/color_grey_999999</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:lines">1</item>
+        <item name="android:inputType">text</item>
+    </style>
+
+    <!--登录输入框样式-->
+    <style name="EditLoginStyle" parent="EditBaseStyle">
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_frame_login_edit</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:drawablePadding">10dp</item>
+    </style>
+    <!--主颜色圆角按钮-->
+    <style name="ButtonCommonStyle" parent="@style/Widget.AppCompat.Button.Borderless">  
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:background">@drawable/bg_rectangle_color_main_20dp</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>
