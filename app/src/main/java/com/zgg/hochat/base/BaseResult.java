@@ -7,7 +7,7 @@ package com.zgg.hochat.base;
 public class BaseResult<T> {
     private String msg;
     private int code;
-    private T data;
+    private T result;
 
     public String getMsg() {
         return msg;
@@ -25,11 +25,11 @@ public class BaseResult<T> {
         this.code = code;
     }
 
-    public T getData() {
-        return data;
+    public T getResult() {
+        return result;
     }
 
-    public void setData(T data) {
-        this.data = data;
+    public void setResult(T result) {
+        this.result = result;
     }
 }

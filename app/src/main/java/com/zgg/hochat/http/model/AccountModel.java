@@ -3,9 +3,9 @@ package com.zgg.hochat.http.model;
 
 import com.zgg.hochat.api.ApiFactory;
 import com.zgg.hochat.api.TokenApiFactory;
+import com.zgg.hochat.base.BaseModel;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.common.MyCallBack;
-import com.zgg.hochat.base.BaseModel;
 
 import java.util.Map;
 
@@ -17,27 +17,20 @@ import java.util.Map;
  * 修改时间：
  * 修改备注：
  */
-public class LoginModel extends BaseModel {
+public class AccountModel extends BaseModel {
 
-    private static LoginModel model;
+    private static AccountModel model;
 
-    private LoginModel() {
+    private AccountModel() {
     }
 
-    public synchronized static LoginModel newInstance() {
+    public synchronized static AccountModel newInstance() {
         if (model == null) {
-            model = new LoginModel();
+            model = new AccountModel();
         }
         return model;
     }
 
-
-    /**
-     * 获token
-     */
-    public void getToken(Map<String, Object> params, MyCallBack callBack) {
-        TokenApiFactory.getService().getToken(params).enqueue(callBack);
-    }
 
     /**
      * 登录

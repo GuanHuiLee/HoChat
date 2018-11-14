@@ -1,6 +1,8 @@
 package com.zgg.hochat.http.presenter;
 
 import com.zgg.hochat.base.BaseResult;
+import com.zgg.hochat.bean.LoginInput;
+import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.common.MyCallBack;
 import com.zgg.hochat.http.contract.LoginContract;
@@ -48,5 +50,27 @@ public class LoginPresenter extends LoginContract.Presenter {
         });
 
 
+    }
+
+    @Override
+    public void login(LoginInput params) {
+        model.login(params, new MyCallBack<BaseResult<LoginResult>>() {
+            @Override
+            public void onSuc(Response<BaseResult<LoginResult>> response) {
+                if (isAttach) {
+                    BaseResult<LoginResult> body = response.body();
+                    int code = body.getCode();
+                    if (code == 200) {
+                        view.showLoginResult(body.getResult());
+                    } else view.showError("登录失败：" + code);
+                }
+            }
+
+            @Override
+            public void onFail(String message) {
+                if (isAttach)
+                    view.showError(message);
+            }
+        });
     }
 }

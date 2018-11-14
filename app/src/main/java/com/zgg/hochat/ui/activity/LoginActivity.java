@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 
 import com.zgg.hochat.R;
+import com.zgg.hochat.bean.LoginInput;
+import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.http.contract.LoginContract;
 import com.zgg.hochat.base.BaseActivity;
@@ -60,14 +62,22 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     private void login() {
         phone = etPhone.getText().toString();
+        String pwd = etPwd.getText().toString();
         Map<String, Object> params = new HashMap<>();
-        params.put("userId", phone);
-        params.put("name", phone);
-        presenter.getToken(params);
+//        params.put("userId", phone);
+//        params.put("name", phone);
+//        presenter.getToken(params);
+
+        presenter.login(new LoginInput("86", phone, pwd));
     }
 
     @Override
     public void showToken(TokenResult data) {
+
+    }
+
+    @Override
+    public void showLoginResult(LoginResult data) {
         /**
          * <p>连接服务器，在整个应用程序全局，只需要调用一次，需在 {@link #init(Context)} 之后调用。</p>
          * <p>如果调用此接口遇到连接失败，SDK 会自动启动重连机制进行最多10次重连，分别是1, 2, 4, 8, 16, 32, 64, 128, 256, 512秒后。

@@ -226,7 +226,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         //push
         if (intent.getData().getScheme().equals("rong") && intent.getData().getQueryParameter("isFromPush") != null) {
 
-            //通过intent.getData().getQueryParameter("push") 为true，判断是否是push消息
+            //通过intent.getResult().getQueryParameter("push") 为true，判断是否是push消息
             if (intent.getData().getQueryParameter("isFromPush").equals("true")) {
                 //只有收到系统消息和不落地 push 消息的时候，pushId 不为 null。而且这两种消息只能通过 server 来发送，客户端发送不了。
                 //RongIM.getInstance().getRongIMClient().recordNotificationEvent(id);
