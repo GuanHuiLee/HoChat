@@ -18,4 +18,9 @@
     <string name="main_customer">意见反馈</string>
     <string name="de_actionbar_system">"系统消息"</string>
     <string name="de_actionbar_sub_defult">"聊天"</string>
+    <string name="private_chat">发起聊天</string>
+    <string name="group_chat">创建群组</string>
+    <string name="add_contacts">添加好友</string>
+    <string name="ac_search_phone_number">请输入手机号</string>
+    <string name="search_friend">添加好友</string>
 </resources>

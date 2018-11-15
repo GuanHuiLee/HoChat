@@ -2,13 +2,11 @@ package com.zgg.hochat.ui.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -17,14 +15,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
+import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.utils.DataUtil;
 
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Locale;
 
 import io.rong.callkit.RongCallAction;
@@ -32,14 +28,8 @@ import io.rong.callkit.RongVoIPIntent;
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
-import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.IRongCallback;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.UserInfo;
-import io.rong.imlib.model.UserOnlineStatusInfo;
-import retrofit2.HttpException;
 
 //CallKit start 1
 //CallKit end 1
@@ -48,7 +38,7 @@ import retrofit2.HttpException;
  * Created by tiankui on 16/11/2.
  */
 
-public class UserDetailActivity extends BaseActivity implements View.OnClickListener {
+public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener {
 
     private static final int SYNC_FRIEND_INFO = 129;
     private ImageView mUserPortrait;
@@ -118,7 +108,7 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
 
 
         if (!TextUtils.isEmpty(mFriend.getUserId())) {
-            String mySelf = DataUtil.getUser();
+            String mySelf = DataUtil.getUser().getPhone();
             if (mySelf.equals(mFriend.getUserId())) {
                 mChatButtonGroupLinearLayout.setVisibility(View.VISIBLE);
                 mAddFriendButton.setVisibility(View.GONE);
@@ -133,6 +123,11 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                 mNoteNameLinearLayout.setVisibility(View.GONE);
             }
         }
+    }
+
+    @Override
+    protected void initToolbar(Toolbar toolbar) {
+
     }
 
 
@@ -202,7 +197,6 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
     //CallKit end 2
 
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -213,6 +207,11 @@ public class UserDetailActivity extends BaseActivity implements View.OnClickList
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 }
+                break;
+            case R.id.ac_bt_add_friend:
+                Intent intent = new Intent(mContext, VerifyUserActivity.class);
+                intent.putExtra("userId", mFriend.getUserId());
+                startActivity(intent);
                 break;
         }
 

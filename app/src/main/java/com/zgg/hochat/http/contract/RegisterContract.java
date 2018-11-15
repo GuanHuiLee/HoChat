@@ -1,11 +1,13 @@
 package com.zgg.hochat.http.contract;
 
 
-import com.zgg.hochat.bean.LoginInput;
-import com.zgg.hochat.bean.LoginResult;
-import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.base.BasePresenter;
 import com.zgg.hochat.base.BaseView;
+import com.zgg.hochat.bean.LoginInput;
+import com.zgg.hochat.bean.LoginResult;
+import com.zgg.hochat.bean.RegisterInput;
+import com.zgg.hochat.bean.RegisterResult;
+import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.http.model.AccountModel;
 
 import java.util.Map;
@@ -19,13 +21,11 @@ import java.util.Map;
  * 修改时间：
  * 修改备注：
  */
-public interface LoginContract {
+public interface RegisterContract {
 
     interface View extends BaseView {
 
-        void showToken(TokenResult data);
-
-        void showLoginResult(LoginResult result);
+        void showRegisterResult(RegisterResult result);
     }
 
     abstract class Presenter extends BasePresenter<View, AccountModel> {
@@ -34,12 +34,8 @@ public interface LoginContract {
             super(view, model);
         }
 
-        /**
-         * 获取token
-         */
-        public abstract void getToken(Map<String, Object> params);
 
-        public abstract void login(LoginInput params);
+        public abstract void register(RegisterInput params);
 
     }
 

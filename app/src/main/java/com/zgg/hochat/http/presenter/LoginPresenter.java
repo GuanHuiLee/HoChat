@@ -6,7 +6,7 @@ import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.common.MyCallBack;
 import com.zgg.hochat.http.contract.LoginContract;
-import com.zgg.hochat.http.model.LoginModel;
+import com.zgg.hochat.http.model.AccountModel;
 
 import java.util.Map;
 
@@ -24,7 +24,7 @@ import retrofit2.Response;
 public class LoginPresenter extends LoginContract.Presenter {
 
 
-    public LoginPresenter(LoginContract.View view, LoginModel model) {
+    public LoginPresenter(LoginContract.View view, AccountModel model) {
         super(view, model);
     }
 

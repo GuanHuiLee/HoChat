@@ -5,8 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.CompoundButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.zgg.hochat.BuildConfig;
@@ -18,9 +21,11 @@ import com.zgg.hochat.ui.fragment.ConversationFragmentEx;
 import com.zgg.hochat.ui.fragment.DiscoverFragment;
 import com.zgg.hochat.ui.fragment.MineFragment;
 import com.zgg.hochat.utils.Constant;
+import com.zgg.hochat.widget.MorePopWindow;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
+import butterknife.OnClick;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
@@ -37,6 +42,11 @@ public class MainActivity extends BaseActivity {
 
     @BindView(R.id.rb_mine)
     RadioButton rbMine;
+
+    @BindView(R.id.iv_more)
+    ImageView iv_more;
+    @BindView(R.id.iv_search)
+    ImageView iv_search;
 
     private FragmentManager fragmentManager;
 
@@ -72,6 +82,7 @@ public class MainActivity extends BaseActivity {
 
         rbChat.setChecked(true);
     }
+
 
     private void showFragment(CompoundButton curView) {
         if (selectView != null) {
@@ -123,6 +134,16 @@ public class MainActivity extends BaseActivity {
             showFragment(buttonView);
         } else {
             hideFragment(buttonView);
+        }
+    }
+
+    @OnClick({R.id.iv_more})
+    public void clickView(View view) {
+        switch (view.getId()) {
+            case R.id.iv_more:
+                MorePopWindow morePopWindow = new MorePopWindow(MainActivity.this);
+                morePopWindow.showPopupWindow(iv_more);
+                break;
         }
     }
 

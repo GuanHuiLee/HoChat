@@ -1,10 +1,18 @@
 package com.zgg.hochat.api;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.zgg.hochat.utils.Constant;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cookie;
+import okhttp3.CookieJar;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -24,6 +32,26 @@ public class ApiFactory {
         mClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor())
+//                .cookieJar(new CookieJar() {
+//                    @Override
+//                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+//
+//                    }
+//
+//                    @Override
+//                    public List<Cookie> loadForRequest(HttpUrl url) {
+//                        List<Cookie> cookies = new ArrayList<>();
+//                        String token = "";
+//
+//                        if (token != null) {
+//                            Cookie cookie = Cookie.parse(url, token);
+//                            cookies.add(cookie);
+//                        }
+//
+//                        return cookies;
+//
+//                    }
+//                })
                 .build();
 
         mRetrofit = new Retrofit.Builder()

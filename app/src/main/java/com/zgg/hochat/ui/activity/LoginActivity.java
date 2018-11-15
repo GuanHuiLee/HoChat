@@ -2,20 +2,24 @@ package com.zgg.hochat.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.zgg.hochat.R;
+import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.LoginResult;
+import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.http.contract.LoginContract;
 import com.zgg.hochat.base.BaseActivity;
-import com.zgg.hochat.http.model.LoginModel;
+import com.zgg.hochat.http.model.AccountModel;
 import com.zgg.hochat.http.presenter.LoginPresenter;
 import com.zgg.hochat.utils.ClearEditTextView;
+import com.zgg.hochat.utils.Constant;
 import com.zgg.hochat.utils.DataUtil;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,13 +28,14 @@ import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 
-public class LoginActivity extends BaseActivity implements LoginContract.View {
+public class LoginActivity extends BaseToolbarActivity implements LoginContract.View {
     @BindView(R.id.et_phone)
     ClearEditTextView etPhone;
     @BindView(R.id.et_pwd)
     ClearEditTextView etPwd;
     private LoginPresenter presenter;
     private String phone;
+    private String pwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,12 +45,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
 
     @Override
     protected void initUI() {
-        presenter = new LoginPresenter(this, LoginModel.newInstance());
+        presenter = new LoginPresenter(this, AccountModel.newInstance());
         addPresenter(presenter);
     }
 
     @Override
     protected void initData() {
+
+    }
+
+    @Override
+    protected void initToolbar(Toolbar toolbar) {
 
     }
 
@@ -56,17 +66,14 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                 login();
                 break;
             case R.id.tv_register:
+                startActivityForResult(new Intent(mContext, RegisterActivity.class), Constant.REQUEST_CODE_REGISTER);
                 break;
         }
     }
 
     private void login() {
         phone = etPhone.getText().toString();
-        String pwd = etPwd.getText().toString();
-        Map<String, Object> params = new HashMap<>();
-//        params.put("userId", phone);
-//        params.put("name", phone);
-//        presenter.getToken(params);
+        pwd = etPwd.getText().toString();
 
         presenter.login(new LoginInput("86", phone, pwd));
     }
@@ -89,7 +96,8 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
          */
         final String token = data.getToken();
         DataUtil.setToken(token);
-        DataUtil.setUser(phone);
+        DataUtil.setUser(phone, pwd);
+        DataUtil.setUserId(data.getId());
 
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
@@ -118,5 +126,17 @@ public class LoginActivity extends BaseActivity implements LoginContract.View {
                 showError("登录失败：" + errorCode);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == Constant.REQUEST_CODE_REGISTER) {
+                RegisterInput input = (RegisterInput) data.getSerializableExtra("data");
+                etPhone.setText(input.getPhone());
+                etPwd.setText(input.getPassword());
+            }
+        }
     }
 }

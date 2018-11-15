@@ -2,10 +2,11 @@ package com.zgg.hochat.http.model;
 
 
 import com.zgg.hochat.api.ApiFactory;
-import com.zgg.hochat.api.TokenApiFactory;
 import com.zgg.hochat.base.BaseModel;
 import com.zgg.hochat.bean.LoginInput;
+import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.common.MyCallBack;
+import com.zgg.hochat.utils.Constant;
 
 import java.util.Map;
 
@@ -31,11 +32,24 @@ public class AccountModel extends BaseModel {
         return model;
     }
 
+    /**
+     * 获token
+     */
+    public void getToken(Map<String, Object> params, MyCallBack callBack) {
+        ApiFactory.getService().getToken(Constant.TOKEN_BASE_IP + "user/getToken.json", params).enqueue(callBack);
+    }
 
     /**
      * 登录
      */
     public void login(LoginInput params, MyCallBack callBack) {
         ApiFactory.getService().login(params).enqueue(callBack);
+    }
+
+    /**
+     * 登录
+     */
+    public void register(RegisterInput params, MyCallBack callBack) {
+        ApiFactory.getService().register(params).enqueue(callBack);
     }
 }

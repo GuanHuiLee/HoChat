@@ -10,6 +10,8 @@ import com.zgg.hochat.utils.ShaUtils;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.UnsupportedCharsetException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
@@ -58,16 +60,15 @@ public class HttpLoggingInterceptor implements Interceptor {
         String nonce = String.valueOf(Math.floor(Math.random() * 1000000));
         String timestamp = String.valueOf(System.currentTimeMillis() / 1000);
 
-        Request request1 = chain.request()
-                .newBuilder()
-                .addHeader("App-Key", appKey)
-                .addHeader("Nonce", nonce)
-                .addHeader("Timestamp", timestamp)
-                .addHeader("Signature", ShaUtils.sha1(appSecret + nonce + timestamp))
-                .build();
+//        request.newBuilder()
+//                .addHeader("App-Key", appKey)
+//                .addHeader("Nonce", nonce)
+//                .addHeader("Timestamp", timestamp)
+//                .addHeader("Signature", ShaUtils.sha1(appSecret + nonce + timestamp))
+//                .build();
 
         long startNs = System.nanoTime();
-        Response response = chain.proceed(request1);
+        Response response = chain.proceed(request);
         long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
 
         ResponseBody responseBody = response.body();
@@ -93,6 +94,16 @@ public class HttpLoggingInterceptor implements Interceptor {
         Logger.d("收到响应\n responseCode:%s\n message:%s\n time:%s\n 请求url：%s\n 请求body：%s\n 响应body：%s",
                 response.code(), response.message(), tookMs, response.request().url(), body, rBody);
 
+        String cookies = null;
+        if (!response.headers("Set-Cookie").isEmpty()) {
+
+            for (String header : response.headers("Set-Cookie")) {
+                if (header.contains("rong_auth_cookie")) {
+                    cookies = header;
+                }
+            }
+        }
+        Logger.d(cookies);
 
         return response;
     }

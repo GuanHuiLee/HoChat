@@ -6,6 +6,8 @@
     android:background="@color/color_fofof6"
     android:orientation="vertical">
 
+    <include layout="@layout/toolbar" />
+
     <LinearLayout
         android:id="@+id/group_info"
         android:layout_width="match_parent"

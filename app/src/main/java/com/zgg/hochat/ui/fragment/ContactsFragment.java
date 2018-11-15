@@ -318,7 +318,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void updatePersonalUI() {
-        mId = DataUtil.getUser();
+        mId = DataUtil.getUser().getPhone();
         mCacheName = mId;
         mNameTextView.setText(mCacheName);
         if (!TextUtils.isEmpty(mId)) {
