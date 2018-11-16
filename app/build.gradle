@@ -78,4 +78,5 @@ dependencies {
     implementation 'com.orhanobut:logger:1.15'
     implementation 'com.huawei.android.hms:push:2.6.1.301'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'org.greenrobot:eventbus:3.1.1'
 }

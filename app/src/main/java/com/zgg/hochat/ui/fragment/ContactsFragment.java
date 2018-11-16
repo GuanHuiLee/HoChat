@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,21 +22,34 @@ import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.FriendListAdapter;
 import com.zgg.hochat.base.BaseFragment;
+import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.bean.GroupMember;
+import com.zgg.hochat.bean.MessageEvent;
+import com.zgg.hochat.http.contract.AllFriendsContract;
+import com.zgg.hochat.http.model.FriendShipModel;
+import com.zgg.hochat.http.presenter.AllFriendsPresenter;
+import com.zgg.hochat.ui.activity.NewFriendListActivity;
 import com.zgg.hochat.ui.activity.UserDetailActivity;
 import com.zgg.hochat.utils.DataUtil;
+import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
+import com.zgg.hochat.widget.pinyin.CharacterParser;
 import com.zgg.hochat.widget.pinyin.PinyinComparator;
 import com.zgg.hochat.widget.pinyin.SideBar;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
+import io.rong.eventbus.ThreadMode;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.mention.MemberMentionedActivity;
-import io.rong.imkit.tools.CharacterParser;
 import io.rong.imlib.model.UserInfo;
 import retrofit2.http.POST;
 
@@ -43,7 +58,7 @@ import retrofit2.http.POST;
  * tab 2 通讯录的 Fragment
  * Created by Bob on 2015/1/25.
  */
-public class ContactsFragment extends BaseFragment implements View.OnClickListener {
+public class ContactsFragment extends BaseFragment implements View.OnClickListener, AllFriendsContract.View {
     @BindView(R.id.list_view)
     ListView mListView;
     @BindView(R.id.sidebar)
@@ -84,6 +99,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     private static final int CLICK_CONTACT_FRAGMENT_FRIEND = 2;
 
+    private AllFriendsPresenter presenter;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_address, container, false);
@@ -109,8 +126,14 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         //实例化汉字转拼音类
         mCharacterParser = CharacterParser.getInstance();
         mPinyinComparator = PinyinComparator.getInstance();
+
+        EventBus.getDefault().register(this);
     }
 
+    @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        presenter.getAllFriends();
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -163,8 +186,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         switch (v.getId()) {
             case R.id.re_newfriends:
                 mUnreadTextView.setVisibility(View.GONE);
-//                Intent intent = new Intent(getActivity(), NewFriendListActivity.class);
-//                startActivityForResult(intent, 20);
+                Intent intent = new Intent(getActivity(), NewFriendListActivity.class);
+                startActivity(intent);
                 break;
             case R.id.re_chatroom:
 //                startActivity(new Intent(getActivity(), GroupListActivity.class));
@@ -210,6 +233,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         try {
 //            BroadcastManager.getInstance(getActivity()).destroy(SealAppContext.UPDATE_FRIEND);
 //            BroadcastManager.getInstance(getActivity()).destroy(SealAppContext.UPDATE_RED_DOT);
@@ -232,6 +256,8 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         mSelectableRoundedImageView = (SelectableRoundedImageView) mHeadView.findViewById(R.id.contact_me_img);
         mNameTextView = (TextView) mHeadView.findViewById(R.id.contact_me_name);
         updatePersonalUI();
+        UserInfo userInfo = new UserInfo(mId, mCacheName, null);
+        ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), mSelectableRoundedImageView, App.getOptions());
         mListView.addHeaderView(mHeadView);
         mNoFriends.setVisibility(View.VISIBLE);
 
@@ -266,56 +292,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 //                updateFriendsList(null);
 //            }
 //        });
+        presenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
+        addPresenter(presenter);
+        presenter.getAllFriends();
     }
 
-    private void updateFriendsList(List<Friend> friendsList) {
-        //updateUI fragment初始化和好友信息更新时都会调用,isReloadList表示是否是好友更新时调用
-        boolean isReloadList = false;
-        if (mFriendList != null && mFriendList.size() > 0) {
-            mFriendList.clear();
-            isReloadList = true;
-        }
-        mFriendList = friendsList;
-        if (mFriendList != null && mFriendList.size() > 0) {
-            handleFriendDataForSort();
-            mNoFriends.setVisibility(View.GONE);
-        } else {
-            mNoFriends.setVisibility(View.VISIBLE);
-        }
-
-        // 根据a-z进行排序源数据
-//        Collections.sort(mFriendList, mPinyinComparator);
-        if (isReloadList) {
-            mSidBar.setVisibility(View.VISIBLE);
-            mFriendListAdapter.updateListView(mFriendList);
-        } else {
-            mSidBar.setVisibility(View.VISIBLE);
-            mFriendListAdapter = new FriendListAdapter(getActivity(), mFriendList);
-
-            mListView.setAdapter(mFriendListAdapter);
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (mListView.getHeaderViewsCount() > 0) {
-                        startFriendDetailsPage(mFriendList.get(position - 1));
-                    } else {
-                        startFriendDetailsPage(mFilteredFriendList.get(position));
-                    }
-                }
-            });
-
-
-            mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                    Friend bean = mFriendList.get(position - 1);
-                    startFriendDetailsPage(bean);
-                    return true;
-                }
-            });
-
-        }
-    }
 
     private void updatePersonalUI() {
         mId = DataUtil.getUser().getPhone();
@@ -356,4 +337,96 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             return "#";
         }
     }
+
+    @Override
+    public void showAllFriendsResult(List<AllFriendsResult> result) {
+        List<Friend> friends = addFriends(result);
+        updateFriendsList(friends);
+    }
+
+    private void updateFriendsList(List<Friend> friendsList) {
+        if (friendsList == null) return;
+
+        //updateUI fragment初始化和好友信息更新时都会调用,isReloadList表示是否是好友更新时调用
+        boolean isReloadList = false;
+        if (mFriendList != null && mFriendList.size() > 0) {
+            mFriendList.clear();
+            isReloadList = true;
+        }
+        mFriendList = friendsList;
+        if (mFriendList != null && mFriendList.size() > 0) {
+            handleFriendDataForSort();
+            mNoFriends.setVisibility(View.GONE);
+        } else {
+            mNoFriends.setVisibility(View.VISIBLE);
+        }
+
+        // 根据a-z进行排序源数据
+        Collections.sort(mFriendList, mPinyinComparator);
+        if (isReloadList) {
+            mSidBar.setVisibility(View.VISIBLE);
+            mFriendListAdapter.updateListView(mFriendList);
+        } else {
+            mSidBar.setVisibility(View.VISIBLE);
+            mFriendListAdapter = new FriendListAdapter(getActivity(), mFriendList);
+
+            mListView.setAdapter(mFriendListAdapter);
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    if (mListView.getHeaderViewsCount() > 0) {
+                        startFriendDetailsPage(mFriendList.get(position - 1));
+                    } else {
+                        startFriendDetailsPage(mFilteredFriendList.get(position));
+                    }
+                }
+            });
+
+
+            mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                    Friend bean = mFriendList.get(position - 1);
+                    startFriendDetailsPage(bean);
+                    return true;
+                }
+            });
+        }
+    }
+
+    /**
+     * 同步接口,从server获取的好友信息插入数据库,目前只有同步接口,如果需要可以加异步接口
+     *
+     * @param list server获取的好友信息
+     * @return List<Friend> 好友列表
+     */
+    private List<Friend> addFriends(final List<AllFriendsResult> list) {
+        if (list != null && list.size() > 0) {
+            List<Friend> friendsList = new ArrayList<>();
+            for (AllFriendsResult resultEntity : list) {
+                String id = resultEntity.getUser().getId();
+                String nickname = resultEntity.getUser().getNickname();
+                if (resultEntity.getStatus() == 20) {
+                    Friend friend = new Friend(
+                            id,
+                            nickname,
+                            Uri.parse(resultEntity.getUser().getPortraitUri()),
+                            resultEntity.getDisplayName(),
+                            null, null, null, null,
+                            CharacterParser.getInstance().getSpelling(nickname),
+                            CharacterParser.getInstance().getSpelling(resultEntity.getDisplayName()));
+                    if (friend.getPortraitUri() == null || TextUtils.isEmpty(friend.getPortraitUri().toString())) {
+                    }
+                    friendsList.add(friend);
+                }
+
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, nickname, null));
+            }
+
+            return friendsList;
+        } else {
+            return null;
+        }
+    }
+
 }

@@ -22,6 +22,7 @@ import android.widget.TextView;
 
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
+import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.GroupMember;
 import com.zgg.hochat.ui.fragment.ConversationFragmentEx;
 import com.zgg.hochat.utils.DataUtil;
@@ -56,7 +57,7 @@ import io.rong.message.VoiceMessage;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseActivity implements View.OnClickListener {
+public class ConversationActivity extends BaseToolbarActivity implements View.OnClickListener {
 
     private String TAG = ConversationActivity.class.getSimpleName();
     /**
@@ -86,19 +87,12 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     public static final int SET_VOICE_TYPING_TITLE = 2;
     public static final int SET_TARGET_ID_TITLE = 0;
 
-    private RelativeLayout layout_announce;
-    private TextView tv_announce;
-    private ImageView iv_arrow;
 
     @Override
     @TargetApi(23)
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
-        layout_announce = (RelativeLayout) findViewById(R.id.ll_annouce);
-        iv_arrow = (ImageView) findViewById(R.id.iv_announce_arrow);
-        layout_announce.setVisibility(View.GONE);
-        tv_announce = (TextView) findViewById(R.id.tv_announce_msg);
 
         Intent intent = getIntent();
 
@@ -106,6 +100,12 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
             return;
 
         mTargetId = intent.getData().getQueryParameter("targetId");
+        //10000 为 Demo Server 加好友的 id，若 targetId 为 10000，则为加好友消息，默认跳转到 NewFriendListActivity
+        // Demo 逻辑
+        if (mTargetId != null && mTargetId.equals("10000")) {
+            startActivity(new Intent(ConversationActivity.this, NewFriendListActivity.class));
+            return;
+        }
 
         mConversationType = Conversation.ConversationType.valueOf(intent.getData()
                 .getLastPathSegment().toUpperCase(Locale.US));
@@ -540,6 +540,11 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     protected void initData() {
+
+    }
+
+    @Override
+    protected void initToolbar(Toolbar toolbar) {
 
     }
 

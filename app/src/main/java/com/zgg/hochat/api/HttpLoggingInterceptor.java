@@ -5,6 +5,7 @@ import android.os.SystemClock;
 
 import com.orhanobut.logger.Logger;
 import com.zgg.hochat.utils.Constant;
+import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.utils.ShaUtils;
 
 import java.io.IOException;
@@ -96,14 +97,15 @@ public class HttpLoggingInterceptor implements Interceptor {
 
         String cookies = null;
         if (!response.headers("Set-Cookie").isEmpty()) {
-
             for (String header : response.headers("Set-Cookie")) {
                 if (header.contains("rong_auth_cookie")) {
                     cookies = header;
                 }
             }
         }
-        Logger.d(cookies);
+        if (cookies != null) {
+            DataUtil.setCookie(cookies);
+        }
 
         return response;
     }

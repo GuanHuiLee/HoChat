@@ -31,7 +31,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme1">
-        <activity android:name=".ui.activity.MainActivity"></activity>
+        <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,10 +60,30 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <!--搜索好友-->
+        <!-- 搜索好友 -->
         <activity
             android:name=".ui.activity.SearchFriendActivity"
             android:screenOrientation="portrait" />
+        <!-- 新的朋友列表 -->
+        <activity
+            android:name=".ui.activity.NewFriendListActivity"
+            android:screenOrientation="portrait" />
+        <!--聚合会话列表-->
+        <activity
+            android:name=".ui.activity.SubConversationListActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.zgg.hochat"
+                    android:path="/subconversationlist"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
 
         <receiver
             android:name=".common.NotificationReceiver"
@@ -290,7 +310,7 @@
         </receiver>
         <!-- MeiZu 配置结束 < -->
 
-        <activity android:name=".ui.activity.VerifyUserActivity"></activity>
+        <activity android:name=".ui.activity.VerifyUserActivity" />
     </application>
 
 </manifest>

@@ -200,4 +200,18 @@ public class Friend extends UserInfo {
             return false;
         }
     }
+
+    @Override
+    public String toString() {
+        return "Friend{" +
+                "displayName='" + displayName + '\'' +
+                ", region='" + region + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", status='" + status + '\'' +
+                ", timestamp=" + timestamp +
+                ", letters='" + letters + '\'' +
+                ", nameSpelling='" + nameSpelling + '\'' +
+                ", displayNameSpelling='" + displayNameSpelling + '\'' +
+                '}';
+    }
 }

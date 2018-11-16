@@ -3,6 +3,7 @@ package com.zgg.hochat.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -11,9 +12,11 @@ import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterResult;
+import com.zgg.hochat.bean.RegisterZggInput;
 import com.zgg.hochat.http.contract.RegisterContract;
 import com.zgg.hochat.http.model.AccountModel;
 import com.zgg.hochat.http.presenter.RegisterPresenter;
+import com.zgg.hochat.utils.AMUtils;
 import com.zgg.hochat.utils.ClearEditTextView;
 
 import butterknife.BindView;
@@ -31,6 +34,8 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     private RegisterPresenter presenter;
     private RegisterInput registerInput;
+    private String phone;
+    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +69,28 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
     }
 
     private void register() {
-        String phone = et_phone.getText().toString();
-        String password = et_pwd.getText().toString();
+        phone = et_phone.getText().toString();
+        password = et_pwd.getText().toString();
+        if (!AMUtils.isMobile(phone)) {
+            showError("请输入正确手机号");
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            showError("请输入密码");
+            return;
+        }
+
         registerInput = new RegisterInput(phone, password);
         presenter.register(registerInput);
     }
 
     @Override
     public void showRegisterResult(RegisterResult result) {
+        presenter.registerZgg(new RegisterZggInput(phone, password));
+    }
+
+    @Override
+    public void showRegisterZggResult(String result) {
         showError("注册成功");
         Intent intent = new Intent();
         intent.putExtra("data", registerInput);

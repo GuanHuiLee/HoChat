@@ -3,9 +3,9 @@ package com.zgg.hochat.http.contract;
 
 import com.zgg.hochat.base.BasePresenter;
 import com.zgg.hochat.base.BaseView;
-import com.zgg.hochat.bean.FindUserResult;
+import com.zgg.hochat.bean.AgreeInput;
 import com.zgg.hochat.bean.InviteInput;
-import com.zgg.hochat.bean.InviteResult;
+import com.zgg.hochat.bean.ActionResult;
 import com.zgg.hochat.http.model.FriendShipModel;
 
 
@@ -21,7 +21,9 @@ public interface FriendRequestContract {
 
     interface View extends BaseView {
 
-        void showInviteResult(InviteResult result);
+        void showInviteResult(ActionResult result);
+
+        void showAgreeResult(ActionResult result);
     }
 
     abstract class Presenter extends BasePresenter<View, FriendShipModel> {
@@ -32,6 +34,8 @@ public interface FriendRequestContract {
 
 
         public abstract void invite(InviteInput params);
+
+        public abstract void agree(AgreeInput params);
 
     }
 

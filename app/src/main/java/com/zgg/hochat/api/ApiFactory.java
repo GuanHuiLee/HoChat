@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.zgg.hochat.utils.Constant;
+import com.zgg.hochat.utils.DataUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,26 +33,26 @@ public class ApiFactory {
         mClient = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor())
-//                .cookieJar(new CookieJar() {
-//                    @Override
-//                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
-//
-//                    }
-//
-//                    @Override
-//                    public List<Cookie> loadForRequest(HttpUrl url) {
-//                        List<Cookie> cookies = new ArrayList<>();
-//                        String token = "";
-//
-//                        if (token != null) {
-//                            Cookie cookie = Cookie.parse(url, token);
-//                            cookies.add(cookie);
-//                        }
-//
-//                        return cookies;
-//
-//                    }
-//                })
+                .cookieJar(new CookieJar() {
+                    @Override
+                    public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
+
+                    }
+
+                    @Override
+                    public List<Cookie> loadForRequest(HttpUrl url) {
+                        List<Cookie> cookies = new ArrayList<>();
+                        String token = DataUtil.getCookie();
+
+                        if (token != null) {
+                            Cookie cookie = Cookie.parse(url, token);
+                            cookies.add(cookie);
+                        }
+
+                        return cookies;
+
+                    }
+                })
                 .build();
 
         mRetrofit = new Retrofit.Builder()

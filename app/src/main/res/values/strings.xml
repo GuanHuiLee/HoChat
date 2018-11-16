@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HoChat</string>
+    <string name="app_name">狐说</string>
     <string name="str_tab_contacts">联系人</string>
     <string name="str_tab_chat">消息</string>
     <string name="str_tab_find">发现</string>
@@ -12,7 +12,7 @@
     <string name="setdisplayname">设置备注</string>
     <string name="start_chat">发起会话</string>
     <string name="start_voice">语音通话</string>
-    <string name="add_friend">视频通话</string>
+    <string name="add_friend">添加好友</string>
     <string name="start_video">视频聊天</string>
     <string name="ac_contact_nick_name">昵称</string>
     <string name="main_customer">意见反馈</string>
@@ -23,4 +23,24 @@
     <string name="add_contacts">添加好友</string>
     <string name="ac_search_phone_number">请输入手机号</string>
     <string name="search_friend">添加好友</string>
+    <string name="rs_ada_user_ship_add">已添加</string>
+    <string name="agree">接&#160;&#160;&#160;受</string>
+    <string name="request">已请求</string>
+    <string name="ignore">已忽略</string>
+    <string name="added">已添加</string>
+    <string name="deleted">已删除</string>
+    <string name="ac_new_friend_list_no_data">暂无数据</string>
+    <string name="no_read_message">"···"</string>
+    <string name="seal_mine_fragment_user_portrait">用户头像</string>
+    <string name="mine_setting">账号设置</string>
+    <string name="my_wallet">我的钱包</string>
+    <string name="mine_service">意见反馈</string>
+    <string name="mine_about">关于狐说</string>
+    <string name="main_customer_xn" />
+    <string name="mine_exit">退出登录</string>
+    <string name="de_actionbar_sub_group">"群组"</string>
+    <string name="de_actionbar_sub_private">"我的私人会话"</string>
+    <string name="de_actionbar_sub_discussion">"我的讨论组"</string>
+    <string name="de_actionbar_sub_system">"系统消息"</string>
+    <string name="de_actionbar_set_public">"公众号"</string>
 </resources>

@@ -5,6 +5,7 @@ import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterResult;
+import com.zgg.hochat.bean.RegisterZggInput;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.common.MyCallBack;
 import com.zgg.hochat.http.contract.LoginContract;
@@ -34,7 +35,7 @@ public class RegisterPresenter extends RegisterContract.Presenter {
 
     @Override
     public void register(RegisterInput params) {
-        model.register(params, new MyCallBack<BaseResult<RegisterResult >>() {
+        model.register(params, new MyCallBack<BaseResult<RegisterResult>>() {
             @Override
             public void onSuc(Response<BaseResult<RegisterResult>> response) {
                 if (isAttach) {
@@ -42,6 +43,28 @@ public class RegisterPresenter extends RegisterContract.Presenter {
                     int code = body.getCode();
                     if (code == 200) {
                         view.showRegisterResult(body.getResult());
+                    } else view.showError("注册失败" + code);
+                }
+            }
+
+            @Override
+            public void onFail(String message) {
+                if (isAttach)
+                    view.showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void registerZgg(RegisterZggInput params) {
+        model.registerZgg(params, new MyCallBack<BaseResult<String>>() {
+            @Override
+            public void onSuc(Response<BaseResult<String>> response) {
+                if (isAttach) {
+                    BaseResult<String> body = response.body();
+                    int code = body.getCode();
+                    if (code == 200) {
+                        view.showRegisterZggResult(body.getMsg());
                     } else view.showError("注册失败" + code);
                 }
             }

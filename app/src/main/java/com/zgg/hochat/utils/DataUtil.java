@@ -48,4 +48,12 @@ public class DataUtil {
     public static String getUserPortrait() {
         return getMmkv().decodeString(Constant.USER_PORTRAIT);
     }
+
+    public static void setCookie(String id) {
+        getMmkv().encode(Constant.COOKIE, id);
+    }
+
+    public static String getCookie() {
+        return getMmkv().decodeString(Constant.COOKIE);
+    }
 }

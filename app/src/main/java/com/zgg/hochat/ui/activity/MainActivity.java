@@ -1,11 +1,14 @@
 package com.zgg.hochat.ui.activity;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -21,16 +24,22 @@ import com.zgg.hochat.ui.fragment.ConversationFragmentEx;
 import com.zgg.hochat.ui.fragment.DiscoverFragment;
 import com.zgg.hochat.ui.fragment.MineFragment;
 import com.zgg.hochat.utils.Constant;
+import com.zgg.hochat.utils.DataUtil;
+import com.zgg.hochat.widget.DragPointView;
 import com.zgg.hochat.widget.MorePopWindow;
 
 import butterknife.BindView;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.rong.imkit.RongContext;
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imkit.manager.IUnReadMessageObserver;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.message.ContactNotificationMessage;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IUnReadMessageObserver {
     @BindView(R.id.rb_chat)
     RadioButton rbChat;
 
@@ -47,6 +56,9 @@ public class MainActivity extends BaseActivity {
     ImageView iv_more;
     @BindView(R.id.iv_search)
     ImageView iv_search;
+
+    @BindView(R.id.seal_num)
+     DragPointView mUnreadNumView;
 
     private FragmentManager fragmentManager;
 
@@ -71,7 +83,7 @@ public class MainActivity extends BaseActivity {
     protected void initUI() {
         rbChat.setTag(Constant.CONVERSATION);
         rbContacts.setTag(ContactsFragment.TAG);
-        rbFind.setTag(DiscoverFragment.TAG);
+//        rbFind.setTag(DiscoverFragment.TAG);
         rbMine.setTag(MineFragment.TAG);
     }
 
@@ -80,9 +92,84 @@ public class MainActivity extends BaseActivity {
         fragmentManager = getSupportFragmentManager();
         conversationList = initConversationList();
 
-        rbChat.setChecked(true);
+        rbContacts.setChecked(true);
+
+        final Conversation.ConversationType[] conversationTypes = {
+                Conversation.ConversationType.PRIVATE,
+                Conversation.ConversationType.GROUP, Conversation.ConversationType.SYSTEM,
+                Conversation.ConversationType.PUBLIC_SERVICE, Conversation.ConversationType.APP_PUBLIC_SERVICE
+        };
+
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(this, conversationTypes);
+        getConversationPush();// 获取 push 的 id 和 target
+        getPushMessage();
     }
 
+    /**
+     * 得到不落地 push 消息
+     */
+    private void getPushMessage() {
+        Intent intent = getIntent();
+        if (intent != null && intent.getData() != null && intent.getData().getScheme().equals("rong")) {
+            String path = intent.getData().getPath();
+            if (path.contains("push_message")) {
+                String cacheToken = DataUtil.getToken();
+                if (TextUtils.isEmpty(cacheToken)) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
+                    if (!RongIM.getInstance().getCurrentConnectionStatus().equals(RongIMClient.ConnectionStatusListener.ConnectionStatus.CONNECTED)) {
+                        RongIM.connect(cacheToken, new RongIMClient.ConnectCallback() {
+                            @Override
+                            public void onTokenIncorrect() {
+                            }
+
+                            @Override
+                            public void onSuccess(String s) {
+                            }
+
+                            @Override
+                            public void onError(RongIMClient.ErrorCode e) {
+                                showError(e.getMessage());
+                            }
+                        });
+                    }
+                }
+            }
+        }
+    }
+
+    private void getConversationPush() {
+        if (getIntent() != null && getIntent().hasExtra("PUSH_CONVERSATIONTYPE") && getIntent().hasExtra("PUSH_TARGETID")) {
+
+            final String conversationType = getIntent().getStringExtra("PUSH_CONVERSATIONTYPE");
+            final String targetId = getIntent().getStringExtra("PUSH_TARGETID");
+
+
+            RongIM.getInstance().getConversation(Conversation.ConversationType.valueOf(conversationType), targetId, new RongIMClient.ResultCallback<Conversation>() {
+                @Override
+                public void onSuccess(Conversation conversation) {
+
+                    if (conversation != null) {
+
+                        if (conversation.getLatestMessage() instanceof ContactNotificationMessage) { //好友消息的push
+                            startActivity(new Intent(MainActivity.this, NewFriendListActivity.class));
+                        } else {
+                            Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon().appendPath("conversation")
+                                    .appendPath(conversationType).appendQueryParameter("targetId", targetId).build();
+                            Intent intent = new Intent(Intent.ACTION_VIEW);
+                            intent.setData(uri);
+                            startActivity(intent);
+                        }
+                    }
+                }
+
+                @Override
+                public void onError(RongIMClient.ErrorCode e) {
+
+                }
+            });
+        }
+    }
 
     private void showFragment(CompoundButton curView) {
         if (selectView != null) {
@@ -161,7 +248,7 @@ public class MainActivity extends BaseActivity {
                 uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                         .appendPath("conversationlist")
                         .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
-                        .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "true")//群组
+                        .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
                         .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
                         .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
                         .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
@@ -207,4 +294,19 @@ public class MainActivity extends BaseActivity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    public void onCountChanged(int count) {
+        if (count == 0) {
+            mUnreadNumView.setVisibility(View.GONE);
+        } else if (count > 0 && count < 100) {
+            mUnreadNumView.setVisibility(View.VISIBLE);
+            mUnreadNumView.setText(String.valueOf(count));
+        } else {
+            mUnreadNumView.setVisibility(View.VISIBLE);
+            mUnreadNumView.setText(R.string.no_read_message);
+        }
+    }
+
+
 }

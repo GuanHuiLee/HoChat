@@ -6,10 +6,13 @@ import android.content.Context;
 
 import com.tencent.mmkv.MMKV;
 
+import io.rong.imageloader.core.DisplayImageOptions;
+import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
 import io.rong.imkit.RongIM;
 
 public class App extends Application {
     private static App mApp = null;
+    private static DisplayImageOptions options;
 
     @Override
     public void onCreate() {
@@ -30,6 +33,15 @@ public class App extends Application {
             RongIM.init(this);
         }
         MMKV.initialize(this);
+
+        options = new DisplayImageOptions.Builder()
+                .showImageForEmptyUri(R.drawable.de_default_portrait)
+                .showImageOnFail(R.drawable.de_default_portrait)
+                .showImageOnLoading(R.drawable.de_default_portrait)
+                .displayer(new FadeInBitmapDisplayer(300))
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .build();
     }
 
     /**
@@ -55,6 +67,9 @@ public class App extends Application {
         return null;
     }
 
+    public static DisplayImageOptions getOptions() {
+        return options;
+    }
 
     public static final App getApplication() {
         return mApp;

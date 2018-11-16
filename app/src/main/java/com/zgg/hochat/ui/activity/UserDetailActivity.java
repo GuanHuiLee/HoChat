@@ -15,21 +15,26 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.utils.DataUtil;
+import com.zgg.hochat.utils.PortraitUtil;
 
 import java.util.Locale;
 
+import butterknife.BindView;
 import io.rong.callkit.RongCallAction;
 import io.rong.callkit.RongVoIPIntent;
 import io.rong.calllib.RongCallClient;
 import io.rong.calllib.RongCallCommon;
 import io.rong.calllib.RongCallSession;
+import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.UserInfo;
 
 //CallKit start 1
 //CallKit end 1
@@ -39,16 +44,24 @@ import io.rong.imlib.model.Conversation;
  */
 
 public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener {
+    @BindView(R.id.contact_top)
+    TextView mUserDisplayName;
+    @BindView(R.id.contact_below)
+    TextView mUserNickName;
+    @BindView(R.id.contact_phone)
+    TextView mUserPhone;
+    @BindView(R.id.ac_bt_add_friend)
+    Button mAddFriendButton;
+    @BindView(R.id.ac_ll_chat_button_group)
+    LinearLayout mChatButtonGroupLinearLayout;
+    @BindView(R.id.user_online_status)
+    TextView mUserLineStatus;
+    @BindView(R.id.ac_iv_user_portrait)
+    ImageView mUserPortrait;
+    @BindView(R.id.ac_ll_note_name)
+    LinearLayout mNoteNameLinearLayout;
 
     private static final int SYNC_FRIEND_INFO = 129;
-    private ImageView mUserPortrait;
-    private TextView mUserNickName;
-    private TextView mUserDisplayName;
-    private TextView mUserPhone;
-    private TextView mUserLineStatus;
-    private LinearLayout mChatButtonGroupLinearLayout;
-    private Button mAddFriendButton;
-    private LinearLayout mNoteNameLinearLayout;
 
     private static final int ADD_FRIEND = 10086;
     private static final int SYN_USER_INFO = 10087;
@@ -68,19 +81,10 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_detail);
         initView();
-        initData();
     }
 
     private void initView() {
         setTitle(R.string.user_details);
-        mUserNickName = (TextView) findViewById(R.id.contact_below);
-        mUserDisplayName = (TextView) findViewById(R.id.contact_top);
-        mUserPhone = (TextView) findViewById(R.id.contact_phone);
-        mUserLineStatus = (TextView) findViewById(R.id.user_online_status);
-        mUserPortrait = (ImageView) findViewById(R.id.ac_iv_user_portrait);
-        mChatButtonGroupLinearLayout = (LinearLayout) findViewById(R.id.ac_ll_chat_button_group);
-        mAddFriendButton = (Button) findViewById(R.id.ac_bt_add_friend);
-        mNoteNameLinearLayout = (LinearLayout) findViewById(R.id.ac_ll_note_name);
 
         mAddFriendButton.setOnClickListener(this);
         mUserPhone.setOnClickListener(this);
@@ -88,9 +92,6 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
     protected void initData() {
         mType = getIntent().getIntExtra("type", 0);
-        if (mType == CLICK_CONVERSATION_USER_PORTRAIT) {
-//            SealAppContext.getInstance().pushActivity(this);
-        }
         mGroupName = getIntent().getStringExtra("groupName");
         mFriend = getIntent().getParcelableExtra("friend");
 
@@ -102,13 +103,13 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
             } else {
                 mUserDisplayName.setText(mFriend.getName());
             }
-//            String portraitUri = SealUserInfoManager.getInstance().getPortraitUri(mFriend);
-//            ImageLoader.getInstance().displayImage(portraitUri, mUserPortrait, App.getOptions());
+            UserInfo userInfo = new UserInfo(mFriend.getUserId(), mFriend.getName(), null);
+            ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), mUserPortrait, App.getOptions());
         }
-
+        mIsFriendsRelationship = true;
 
         if (!TextUtils.isEmpty(mFriend.getUserId())) {
-            String mySelf = DataUtil.getUser().getPhone();
+            String mySelf = DataUtil.getUserId();
             if (mySelf.equals(mFriend.getUserId())) {
                 mChatButtonGroupLinearLayout.setVisibility(View.VISIBLE);
                 mAddFriendButton.setVisibility(View.GONE);

@@ -1,16 +1,14 @@
 package com.zgg.hochat.ui.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.zgg.hochat.R;
-import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.InviteInput;
-import com.zgg.hochat.bean.InviteResult;
+import com.zgg.hochat.bean.ActionResult;
 import com.zgg.hochat.http.contract.FriendRequestContract;
 import com.zgg.hochat.http.model.FriendShipModel;
 import com.zgg.hochat.http.presenter.FriendRequestPresenter;
@@ -18,7 +16,6 @@ import com.zgg.hochat.utils.ClearEditTextView;
 import com.zgg.hochat.utils.DataUtil;
 
 import butterknife.BindView;
-import retrofit2.http.Body;
 
 public class VerifyUserActivity extends BaseToolbarActivity implements FriendRequestContract.View {
     @BindView(R.id.ct_mark)
@@ -59,8 +56,13 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
     }
 
     @Override
-    public void showInviteResult(InviteResult result) {
+    public void showInviteResult(ActionResult result) {
         showError(result.getAction());
         finish();
+    }
+
+    @Override
+    public void showAgreeResult(ActionResult result) {
+
     }
 }

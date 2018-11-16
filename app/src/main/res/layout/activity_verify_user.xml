@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f0f0f6"
     android:orientation="vertical"
     tools:context=".ui.activity.VerifyUserActivity">
 
@@ -19,6 +20,6 @@
         android:id="@+id/ct_mark"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@null"
+        android:background="@color/color_white"
         android:padding="10dp" />
 </LinearLayout>

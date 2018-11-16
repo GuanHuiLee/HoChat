@@ -3,6 +3,7 @@ package com.zgg.hochat.http.model;
 
 import com.zgg.hochat.api.ApiFactory;
 import com.zgg.hochat.base.BaseModel;
+import com.zgg.hochat.bean.AgreeInput;
 import com.zgg.hochat.bean.InviteInput;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.RegisterInput;
@@ -40,5 +41,14 @@ public class FriendShipModel extends BaseModel {
 
     public void invite(InviteInput inviteInput, MyCallBack callBack) {
         ApiFactory.getService().invite(inviteInput).enqueue(callBack);
+    }
+
+    public void agree(AgreeInput inviteInput, MyCallBack callBack) {
+        ApiFactory.getService().agree(inviteInput).enqueue(callBack);
+    }
+
+
+    public void getAllFriends(MyCallBack callBack) {
+        ApiFactory.getService().getAllFriends().enqueue(callBack);
     }
 }

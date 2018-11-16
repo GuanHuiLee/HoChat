@@ -17,34 +17,52 @@
 
     <View style="@style/comDivider" />
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/color_white"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/rb_chat"
-            style="@style/BottomTabRb"
-            android:drawableTop="@drawable/selector_chat"
-            android:text="@string/str_tab_chat" />
+        <LinearLayout
+            android:id="@+id/ll"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/color_white"
+            android:gravity="center_vertical">
 
-        <RadioButton
-            android:id="@+id/rb_contacts"
-            style="@style/BottomTabRb"
-            android:drawableTop="@drawable/selector_contacts"
-            android:text="@string/str_tab_contacts" />
+            <RadioButton
+                android:id="@+id/rb_chat"
+                style="@style/BottomTabRb"
+                android:drawableTop="@drawable/selector_chat"
+                android:text="@string/str_tab_chat" />
 
-        <RadioButton
-            android:id="@+id/rb_find"
-            style="@style/BottomTabRb"
-            android:drawableTop="@drawable/selector_find"
-            android:text="@string/str_tab_find" />
+            <RadioButton
+                android:id="@+id/rb_contacts"
+                style="@style/BottomTabRb"
+                android:drawableTop="@drawable/selector_contacts"
+                android:text="@string/str_tab_contacts" />
 
-        <RadioButton
-            android:id="@+id/rb_mine"
-            style="@style/BottomTabRb"
-            android:drawableTop="@drawable/selector_mine"
-            android:text="@string/str_tab_mine" />
-    </LinearLayout>
+            <RadioButton
+                android:id="@+id/rb_find"
+                style="@style/BottomTabRb"
+                android:drawableTop="@drawable/selector_find"
+                android:text="@string/str_tab_find"
+                android:visibility="gone" />
+
+            <RadioButton
+                android:id="@+id/rb_mine"
+                style="@style/BottomTabRb"
+                android:drawableTop="@drawable/selector_mine"
+                android:text="@string/str_tab_mine" />
+        </LinearLayout>
+
+        <com.zgg.hochat.widget.DragPointView
+            android:id="@+id/seal_num"
+            android:layout_width="19dp"
+            android:layout_height="19dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/ll"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:visibility="invisible" />
+    </FrameLayout>
 </LinearLayout>

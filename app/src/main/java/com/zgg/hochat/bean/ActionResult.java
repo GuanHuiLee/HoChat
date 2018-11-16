@@ -1,6 +1,6 @@
 package com.zgg.hochat.bean;
 
-public class InviteResult {
+public class ActionResult {
     private String action;
 
     public String getAction() {

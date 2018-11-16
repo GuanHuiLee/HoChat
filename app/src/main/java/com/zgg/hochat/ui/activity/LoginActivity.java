@@ -3,6 +3,7 @@ package com.zgg.hochat.ui.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.zgg.hochat.R;
@@ -15,6 +16,7 @@ import com.zgg.hochat.http.contract.LoginContract;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.http.model.AccountModel;
 import com.zgg.hochat.http.presenter.LoginPresenter;
+import com.zgg.hochat.utils.AMUtils;
 import com.zgg.hochat.utils.ClearEditTextView;
 import com.zgg.hochat.utils.Constant;
 import com.zgg.hochat.utils.DataUtil;
@@ -74,6 +76,15 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
     private void login() {
         phone = etPhone.getText().toString();
         pwd = etPwd.getText().toString();
+
+        if (!AMUtils.isMobile(phone)) {
+            showError("请输入正确手机号");
+            return;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            showError("请输入密码");
+            return;
+        }
 
         presenter.login(new LoginInput("86", phone, pwd));
     }

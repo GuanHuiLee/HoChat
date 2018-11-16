@@ -3,13 +3,10 @@ package com.zgg.hochat.http.contract;
 
 import com.zgg.hochat.base.BasePresenter;
 import com.zgg.hochat.base.BaseView;
-import com.zgg.hochat.bean.FindUserResult;
-import com.zgg.hochat.bean.RegisterInput;
-import com.zgg.hochat.bean.RegisterResult;
-import com.zgg.hochat.http.model.AccountModel;
+import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.http.model.FriendShipModel;
 
-import io.rong.imlib.model.UserInfo;
+import java.util.List;
 
 
 /**
@@ -20,12 +17,11 @@ import io.rong.imlib.model.UserInfo;
  * 修改时间：
  * 修改备注：
  */
-public interface FindUserContract {
+public interface AllFriendsContract {
 
     interface View extends BaseView {
 
-        void showFindUserResult(FindUserResult result);
-
+        void showAllFriendsResult(List<AllFriendsResult> result);
     }
 
     abstract class Presenter extends BasePresenter<View, FriendShipModel> {
@@ -35,7 +31,7 @@ public interface FindUserContract {
         }
 
 
-        public abstract void findUserByPhone(String params);
+        public abstract void getAllFriends();
 
     }
 
