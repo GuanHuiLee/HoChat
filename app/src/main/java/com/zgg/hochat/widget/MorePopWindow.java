@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 
 import com.zgg.hochat.R;
 import com.zgg.hochat.ui.activity.SearchFriendActivity;
+import com.zgg.hochat.ui.activity.SelectFriendsActivity;
 
 
 public class MorePopWindow extends PopupWindow {
@@ -22,7 +23,7 @@ public class MorePopWindow extends PopupWindow {
     @SuppressLint("InflateParams")
     public MorePopWindow(final Activity context) {
         LayoutInflater inflater = (LayoutInflater) context
-                                  .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View content = inflater.inflate(R.layout.popupwindow_add, null);
 
         // 设置SelectPicPopupWindow的View
@@ -45,32 +46,32 @@ public class MorePopWindow extends PopupWindow {
         this.setAnimationStyle(R.style.AnimationPreview);
 
 
-        RelativeLayout re_addfriends = (RelativeLayout) content.findViewById(R.id.re_addfriends);
-        RelativeLayout re_chatroom = (RelativeLayout) content.findViewById(R.id.re_chatroom);
-        RelativeLayout re_scanner = (RelativeLayout) content.findViewById(R.id.re_scanner);
-        re_addfriends.setOnClickListener(new OnClickListener() {
+        RelativeLayout create_group = (RelativeLayout) content.findViewById(R.id.create_group);
+        RelativeLayout start_chat = (RelativeLayout) content.findViewById(R.id.start_chat);
+        RelativeLayout add_friend = (RelativeLayout) content.findViewById(R.id.add_friend);
+        create_group.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(new Intent(context, SelectFriendsActivity.class));
-//                intent.putExtra("createGroup", true);
-//                context.startActivity(intent);
-//                MorePopWindow.this.dismiss();
-
-            }
-
-        });
-        re_chatroom.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-//                context.startActivity(new Intent(context, SelectFriendsActivity.class));
+                Intent intent = new Intent(new Intent(context, SelectFriendsActivity.class));
+                intent.putExtra("createGroup", true);
+                context.startActivity(intent);
                 MorePopWindow.this.dismiss();
 
             }
 
         });
-        re_scanner.setOnClickListener(new OnClickListener() {
+        start_chat.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, SelectFriendsActivity.class));
+                MorePopWindow.this.dismiss();
+
+            }
+
+        });
+        add_friend.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 context.startActivity(new Intent(context, SearchFriendActivity.class));

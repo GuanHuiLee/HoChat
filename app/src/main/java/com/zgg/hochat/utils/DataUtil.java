@@ -56,4 +56,12 @@ public class DataUtil {
     public static String getCookie() {
         return getMmkv().decodeString(Constant.COOKIE);
     }
+
+    public static void setNickName(String id) {
+        getMmkv().encode(Constant.NIKE_NAME, id);
+    }
+
+    public static String getNickName() {
+        return getMmkv().decodeString(Constant.NIKE_NAME);
+    }
 }

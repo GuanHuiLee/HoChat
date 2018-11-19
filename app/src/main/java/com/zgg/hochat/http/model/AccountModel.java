@@ -4,6 +4,7 @@ package com.zgg.hochat.http.model;
 import com.zgg.hochat.api.ApiFactory;
 import com.zgg.hochat.base.BaseModel;
 import com.zgg.hochat.bean.LoginInput;
+import com.zgg.hochat.bean.NickNameInput;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterZggInput;
 import com.zgg.hochat.common.MyCallBack;
@@ -57,4 +58,13 @@ public class AccountModel extends BaseModel {
     public void registerZgg(RegisterZggInput input, MyCallBack callBack) {
         ApiFactory.getService().registerZgg(Constant.BASE_ZGG_IP + "user/user/register", input).enqueue(callBack);
     }
+
+    public void setNickName(NickNameInput input, MyCallBack callBack) {
+        ApiFactory.getService().setNickName(input).enqueue(callBack);
+    }
+
+    public void getUserInfoById(String id, MyCallBack callBack) {
+        ApiFactory.getService().getUserInfoById(id).enqueue(callBack);
+    }
+
 }

@@ -85,6 +85,28 @@
             </intent-filter>
         </activity>
 
+
+        <!--选择联系人 多人聊天-->
+        <activity
+            android:name=".ui.activity.SelectFriendsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.CreateGroupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GroupListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.GroupDetailActivity"
+            android:screenOrientation="portrait" />
+
+        <!--我的账号-->
+        <activity
+            android:name=".ui.activity.MyAccountActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.activity.UpdateNameActivity"
+            android:screenOrientation="portrait" />
         <receiver
             android:name=".common.NotificationReceiver"
             android:exported="true">

@@ -13,6 +13,7 @@ import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseFragment;
 import com.zgg.hochat.ui.activity.LoginActivity;
+import com.zgg.hochat.ui.activity.MyAccountActivity;
 import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
@@ -45,7 +46,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initUI() {
-        String phone = DataUtil.getUser().getPhone();
+        String phone = DataUtil.getNickName();
         UserInfo userInfo = new UserInfo(DataUtil.getUserId(), phone, null);
         ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), mSelectableRoundedImageView, App.getOptions());
         tv_name.setText(phone);
@@ -62,7 +63,7 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
 
     }
 
-    @OnClick({R.id.mine_exit})
+    @OnClick({R.id.mine_exit, R.id.start_user_profile})
     public void clickView(View view) {
         switch (view.getId()) {
             case R.id.mine_exit:
@@ -72,6 +73,9 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 loginActivityIntent.setClass(mContext, LoginActivity.class);
                 loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 mContext.startActivity(loginActivityIntent);
+                break;
+            case R.id.start_user_profile:
+                startActivity(new Intent(mContext, MyAccountActivity.class));
                 break;
         }
     }

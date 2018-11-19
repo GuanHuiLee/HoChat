@@ -11,4 +11,6 @@
     <color name="color_grey_999999">#999999</color>
     <color name="color_fofof6">#f0f0f6</color>
     <color name="text_color">#353535</color>
+    <color name="text_line_color">#dfdfdd</color>
+    <color name="seal_bg">#f0f0f6</color>
 </resources>

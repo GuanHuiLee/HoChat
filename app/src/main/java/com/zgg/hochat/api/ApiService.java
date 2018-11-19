@@ -1,13 +1,22 @@
 package com.zgg.hochat.api;
 
 import com.zgg.hochat.base.BaseResult;
+import com.zgg.hochat.bean.AddGroupMemberInput;
 import com.zgg.hochat.bean.AgreeInput;
+import com.zgg.hochat.bean.CreateCroupInput;
+import com.zgg.hochat.bean.CreateGroupResult;
 import com.zgg.hochat.bean.FindUserResult;
 import com.zgg.hochat.bean.AllFriendsResult;
+import com.zgg.hochat.bean.GetGroupDetailResult;
+import com.zgg.hochat.bean.GetGroupMembersResult;
+import com.zgg.hochat.bean.GetGroupsResult;
+import com.zgg.hochat.bean.GetUserInfoByIdResult;
 import com.zgg.hochat.bean.InviteInput;
 import com.zgg.hochat.bean.ActionResult;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.LoginResult;
+import com.zgg.hochat.bean.NickNameInput;
+import com.zgg.hochat.bean.QuitGroupInput;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterResult;
 import com.zgg.hochat.bean.RegisterZggInput;
@@ -100,4 +109,82 @@ public interface ApiService {
      */
     @GET("friendship/all")
     Call<BaseResult<List<AllFriendsResult>>> getAllFriends();
+
+    /**
+     * 创建群组
+     *
+     * @return
+     */
+    @POST("group/create")
+    Call<BaseResult<CreateGroupResult>> createCroup(@Body CreateCroupInput input);
+
+    /**
+     * 获取所有群
+     *
+     * @return
+     */
+    @GET("user/groups")
+    Call<BaseResult<List<GetGroupsResult>>> getGroups();
+
+    /**
+     * 添加群员
+     *
+     * @return
+     */
+    @POST("group/add")
+    Call<BaseResult<String>> addGroupMembers(@Body AddGroupMemberInput input);
+
+    /**
+     * 删除群员
+     *
+     * @return
+     */
+    @POST("group/kick")
+    Call<BaseResult<String>> kickGroupMembers(@Body AddGroupMemberInput input);
+
+
+    /**
+     * 退群
+     *
+     * @return
+     */
+    @POST("group/quit")
+    Call<BaseResult<String>> quitGroup(@Body QuitGroupInput input);
+
+    /**
+     * 解散群组
+     *
+     * @return
+     */
+    @POST("group/dismiss")
+    Call<BaseResult<String>> dismissGroup(@Body QuitGroupInput input);
+
+
+    /**
+     * 获取群成员
+     *
+     * @return
+     */
+    @GET("group/{id}/members")
+    Call<BaseResult<List<GetGroupMembersResult>>> getGroupMembers(@Path("id") String id);
+
+    /**
+     * 获取群信息
+     */
+    @GET("group/{id}")
+    Call<BaseResult<GetGroupDetailResult>> getGroupDetail(@Path("id") String id);
+
+
+    /**
+     * 修改昵称
+     */
+    @POST("user/set_nickname")
+    Call<BaseResult<String>> setNickName(@Body NickNameInput input);
+
+    /**
+     * 获取用户信息
+     */
+    @GET("user/{id}")
+    Call<BaseResult<GetUserInfoByIdResult>> getUserInfoById(@Path("id") String id);
+
 }

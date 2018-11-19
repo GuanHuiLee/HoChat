@@ -8,6 +8,7 @@ public class Constant {
     public static final String APP_SECRET = "4gplCUI2Yl8";
     public static final String TOKEN = "token";
     public static final String USER_NAME = "userName";
+    public static final String NIKE_NAME = "nickName";
     public static final String USER_ID = "userId";
     public static final String USER_PWD = "userPwd";
     public static final String CONVERSATION = "conversation";

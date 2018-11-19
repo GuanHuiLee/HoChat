@@ -1,15 +1,9 @@
 package com.zgg.hochat.ui.fragment;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +17,18 @@ import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.FriendListAdapter;
 import com.zgg.hochat.base.BaseFragment;
 import com.zgg.hochat.bean.AllFriendsResult;
+import com.zgg.hochat.bean.CreateGroupResult;
 import com.zgg.hochat.bean.Friend;
-import com.zgg.hochat.bean.GroupMember;
+import com.zgg.hochat.bean.GetGroupDetailResult;
+import com.zgg.hochat.bean.GetGroupsResult;
 import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.http.contract.AllFriendsContract;
+import com.zgg.hochat.http.contract.GroupContract;
 import com.zgg.hochat.http.model.FriendShipModel;
+import com.zgg.hochat.http.model.GroupModel;
 import com.zgg.hochat.http.presenter.AllFriendsPresenter;
+import com.zgg.hochat.http.presenter.GroupPresenter;
+import com.zgg.hochat.ui.activity.GroupListActivity;
 import com.zgg.hochat.ui.activity.NewFriendListActivity;
 import com.zgg.hochat.ui.activity.UserDetailActivity;
 import com.zgg.hochat.utils.DataUtil;
@@ -46,19 +46,17 @@ import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
-import io.rong.eventbus.ThreadMode;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.mention.MemberMentionedActivity;
+import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
-import retrofit2.http.POST;
 
 
 /**
  * tab 2 通讯录的 Fragment
  * Created by Bob on 2015/1/25.
  */
-public class ContactsFragment extends BaseFragment implements View.OnClickListener, AllFriendsContract.View {
+public class ContactsFragment extends BaseFragment implements View.OnClickListener, AllFriendsContract.View, GroupContract.View {
     @BindView(R.id.list_view)
     ListView mListView;
     @BindView(R.id.sidebar)
@@ -100,6 +98,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     private static final int CLICK_CONTACT_FRAGMENT_FRIEND = 2;
 
     private AllFriendsPresenter presenter;
+    private GroupPresenter groupsPresenter;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -132,7 +131,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        presenter.getAllFriends();
+        if (event.getMessage().equals("group")) {
+            groupsPresenter.getGroups();
+        } else
+            presenter.getAllFriends();
     }
 
     @Override
@@ -190,7 +192,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                 startActivity(intent);
                 break;
             case R.id.re_chatroom:
-//                startActivity(new Intent(getActivity(), GroupListActivity.class));
+                startActivity(new Intent(getActivity(), GroupListActivity.class));
                 break;
             case R.id.publicservice:
 //                Intent intentPublic = new Intent(getActivity(), PublicServiceActivity.class);
@@ -295,6 +297,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         presenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
         addPresenter(presenter);
         presenter.getAllFriends();
+
+        groupsPresenter = new GroupPresenter(this, GroupModel.newInstance());
+        addPresenter(groupsPresenter);
+        groupsPresenter.getGroups();
     }
 
 
@@ -394,12 +400,6 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
-    /**
-     * 同步接口,从server获取的好友信息插入数据库,目前只有同步接口,如果需要可以加异步接口
-     *
-     * @param list server获取的好友信息
-     * @return List<Friend> 好友列表
-     */
     private List<Friend> addFriends(final List<AllFriendsResult> list) {
         if (list != null && list.size() > 0) {
             List<Friend> friendsList = new ArrayList<>();
@@ -429,4 +429,33 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         }
     }
 
+    @Override
+    public void showCreateGroupResult(CreateGroupResult result) {
+
+    }
+
+    @Override
+    public void showGetGroupsResult(List<GetGroupsResult> result) {
+
+        for (GetGroupsResult getGroupsResult : result) {
+            GetGroupsResult.GroupBean group = getGroupsResult.getGroup();
+            Group groupInfo = new Group(group.getId(), group.getName(), null);
+            RongIM.getInstance().refreshGroupInfoCache(groupInfo);
+        }
+    }
+
+    @Override
+    public void showQuitGroupResult(String result) {
+
+    }
+
+    @Override
+    public void showDismissGroupResult(String result) {
+
+    }
+
+    @Override
+    public void showGetGroupDetailResult(GetGroupDetailResult groupDetail) {
+
+    }
 }

@@ -1,6 +1,7 @@
 package com.zgg.hochat.ui.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -8,13 +9,16 @@ import android.view.View;
 
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseToolbarActivity;
+import com.zgg.hochat.bean.GetUserInfoByIdResult;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.TokenResult;
+import com.zgg.hochat.http.contract.AccountContract;
 import com.zgg.hochat.http.contract.LoginContract;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.http.model.AccountModel;
+import com.zgg.hochat.http.presenter.AccountPresenter;
 import com.zgg.hochat.http.presenter.LoginPresenter;
 import com.zgg.hochat.utils.AMUtils;
 import com.zgg.hochat.utils.ClearEditTextView;
@@ -29,15 +33,18 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.UserInfo;
 
-public class LoginActivity extends BaseToolbarActivity implements LoginContract.View {
+public class LoginActivity extends BaseToolbarActivity implements LoginContract.View, AccountContract.View {
     @BindView(R.id.et_phone)
     ClearEditTextView etPhone;
     @BindView(R.id.et_pwd)
     ClearEditTextView etPwd;
     private LoginPresenter presenter;
+    private AccountPresenter accountPresenter;
     private String phone;
     private String pwd;
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +56,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
     protected void initUI() {
         presenter = new LoginPresenter(this, AccountModel.newInstance());
         addPresenter(presenter);
+        accountPresenter = new AccountPresenter(this, AccountModel.newInstance());
+        addPresenter(accountPresenter);
     }
 
     @Override
@@ -108,7 +117,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
         final String token = data.getToken();
         DataUtil.setToken(token);
         DataUtil.setUser(phone, pwd);
-        DataUtil.setUserId(data.getId());
+        id = data.getId();
+        DataUtil.setUserId(id);
 
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
 
@@ -127,9 +137,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
              */
             @Override
             public void onSuccess(String s) {
-                showError("登录成功");
-                startActivity(new Intent(mContext, MainActivity.class));
-                finish();
+                accountPresenter.getUserInfoById(id);
             }
 
             @Override
@@ -149,5 +157,23 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
                 etPwd.setText(input.getPassword());
             }
         }
+    }
+
+    @Override
+    public void showSetNickNameResult(String result) {
+
+    }
+
+    @Override
+    public void showUserInfoResult(GetUserInfoByIdResult result) {
+        String nickName = result.getNickname();
+        String portraitUri = result.getPortraitUri();
+        DataUtil.setNickName(nickName);
+        DataUtil.setUserPortrait(portraitUri);
+        RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, nickName, Uri.parse(portraitUri)));
+
+        showError("登录成功");
+        startActivity(new Intent(mContext, MainActivity.class));
+        finish();
     }
 }

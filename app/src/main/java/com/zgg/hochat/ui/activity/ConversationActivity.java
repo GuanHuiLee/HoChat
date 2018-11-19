@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import butterknife.BindView;
 import io.rong.callkit.RongCallKit;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.RongKitIntent;
@@ -57,7 +59,11 @@ import io.rong.message.VoiceMessage;
  * 2，加载会话页面
  * 3，push 和 通知 判断
  */
-public class ConversationActivity extends BaseToolbarActivity implements View.OnClickListener {
+public class ConversationActivity extends BaseActivity implements View.OnClickListener {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.toolbar_image)
+    ImageView iv_other;
 
     private String TAG = ConversationActivity.class.getSimpleName();
     /**
@@ -93,11 +99,13 @@ public class ConversationActivity extends BaseToolbarActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
+        setSupportActionBar(toolbar);
 
         Intent intent = getIntent();
 
-        if (intent == null || intent.getData() == null)
+        if (intent == null || intent.getData() == null) {
             return;
+        }
 
         mTargetId = intent.getData().getQueryParameter("targetId");
         //10000 为 Demo Server 加好友的 id，若 targetId 为 10000，则为加好友消息，默认跳转到 NewFriendListActivity
@@ -118,6 +126,23 @@ public class ConversationActivity extends BaseToolbarActivity implements View.On
         if (mConversationType.equals(Conversation.ConversationType.CUSTOMER_SERVICE)) {
             setAnnounceListener();
         }
+
+
+        if (mConversationType.equals(Conversation.ConversationType.GROUP)) {//群聊
+            iv_other.setBackground(getResources().getDrawable(R.mipmap.icon2_menu));
+        } else if (mConversationType.equals(Conversation.ConversationType.PRIVATE)
+                || mConversationType.equals(Conversation.ConversationType.PUBLIC_SERVICE)
+                || mConversationType.equals(Conversation.ConversationType.APP_PUBLIC_SERVICE)
+                || mConversationType.equals(Conversation.ConversationType.DISCUSSION)) {
+            iv_other.setBackground(getResources().getDrawable(R.mipmap.icon1_menu));
+
+            iv_other.setVisibility(View.GONE);
+            iv_other.setClickable(false);
+        } else {
+            iv_other.setVisibility(View.GONE);
+            iv_other.setClickable(false);
+        }
+        iv_other.setOnClickListener(this);
 
         mHandler = new Handler(new Handler.Callback() {
             @Override
@@ -476,46 +501,6 @@ public class ConversationActivity extends BaseToolbarActivity implements View.On
         }
     }
 
-    /**
-     * 根据 targetid 和 ConversationType 进入到设置页面
-     */
-    private void enterSettingActivity() {
-
-        if (mConversationType == Conversation.ConversationType.PUBLIC_SERVICE
-                || mConversationType == Conversation.ConversationType.APP_PUBLIC_SERVICE) {
-
-            RongIM.getInstance().startPublicServiceProfile(this, mConversationType, mTargetId);
-        } else {
-            UriFragment fragment = (UriFragment) getSupportFragmentManager().getFragments().get(0);
-            //得到讨论组的 targetId
-            mTargetId = fragment.getUri().getQueryParameter("targetId");
-
-            if (TextUtils.isEmpty(mTargetId)) {
-                showError("讨论组尚未创建成功");
-            }
-
-
-            Intent intent = null;
-//            if (mConversationType == Conversation.ConversationType.GROUP) {
-//                intent = new Intent(this, GroupDetailActivity.class);
-//                intent.putExtra("conversationType", Conversation.ConversationType.GROUP);
-//            } else if (mConversationType == Conversation.ConversationType.PRIVATE) {
-//                intent = new Intent(this, PrivateChatDetailActivity.class);
-//                intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE);
-//            } else if (mConversationType == Conversation.ConversationType.DISCUSSION) {
-//                intent = new Intent(this, DiscussionDetailActivity.class);
-//                intent.putExtra("TargetId", mTargetId);
-//                startActivityForResult(intent, 166);
-//                return;
-//            }
-            intent.putExtra("TargetId", mTargetId);
-            if (intent != null) {
-                startActivityForResult(intent, 500);
-            }
-
-        }
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -540,11 +525,6 @@ public class ConversationActivity extends BaseToolbarActivity implements View.On
 
     @Override
     protected void initData() {
-
-    }
-
-    @Override
-    protected void initToolbar(Toolbar toolbar) {
 
     }
 
@@ -589,4 +569,53 @@ public class ConversationActivity extends BaseToolbarActivity implements View.On
         enterSettingActivity();
     }
 
+
+    /**
+     * 根据 targetid 和 ConversationType 进入到设置页面
+     */
+    private void enterSettingActivity() {
+
+        if (mConversationType == Conversation.ConversationType.PUBLIC_SERVICE
+                || mConversationType == Conversation.ConversationType.APP_PUBLIC_SERVICE) {
+
+            RongIM.getInstance().startPublicServiceProfile(this, mConversationType, mTargetId);
+        } else {
+            UriFragment fragment = (UriFragment) getSupportFragmentManager().getFragments().get(0);
+            //得到讨论组的 targetId
+            mTargetId = fragment.getUri().getQueryParameter("targetId");
+
+            if (TextUtils.isEmpty(mTargetId)) {
+                showError("讨论组尚未创建成功");
+            }
+
+
+            Intent intent = null;
+            if (mConversationType == Conversation.ConversationType.GROUP) {
+                intent = new Intent(this, GroupDetailActivity.class);
+                intent.putExtra("conversationType", Conversation.ConversationType.GROUP);
+            } else if (mConversationType == Conversation.ConversationType.PRIVATE) {
+//                intent = new Intent(this, PrivateChatDetailActivity.class);
+//                intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE);
+            } else if (mConversationType == Conversation.ConversationType.DISCUSSION) {
+//                intent = new Intent(this, DiscussionDetailActivity.class);
+//                intent.putExtra("TargetId", mTargetId);
+//                startActivityForResult(intent, 166);
+                return;
+            }
+            intent.putExtra("TargetId", mTargetId);
+            if (intent != null) {
+                startActivityForResult(intent, 500);
+            }
+
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

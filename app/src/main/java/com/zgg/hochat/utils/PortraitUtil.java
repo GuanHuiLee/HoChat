@@ -65,7 +65,7 @@ public class PortraitUtil {
             return generateDefaultAvatar(userInfo.getName(), userInfo.getUserId());
     }
 
-    private static String generateDefaultAvatar(String username, String userid) {
+    public static String generateDefaultAvatar(String username, String userid) {
 
         String s = null;
         if (!TextUtils.isEmpty(username)) {

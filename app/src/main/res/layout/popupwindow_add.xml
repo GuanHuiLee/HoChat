@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:id="@+id/re_chatroom"
+            android:id="@+id/start_chat"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginLeft="14dp"
@@ -35,7 +35,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/re_addfriends"
+            android:id="@+id/create_group"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginLeft="14dp"
@@ -57,7 +57,7 @@
 
 
         <RelativeLayout
-            android:id="@+id/re_scanner"
+            android:id="@+id/add_friend"
             android:layout_width="match_parent"
             android:layout_height="49dp"
             android:layout_marginLeft="14dp"
