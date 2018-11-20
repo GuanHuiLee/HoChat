@@ -99,7 +99,9 @@
         <activity
             android:name=".ui.activity.GroupDetailActivity"
             android:screenOrientation="portrait" />
-
+        <activity
+            android:name=".ui.activity.NoteInformationActivity"
+            android:screenOrientation="portrait" />
         <!--我的账号-->
         <activity
             android:name=".ui.activity.MyAccountActivity"
@@ -107,6 +109,7 @@
         <activity
             android:name=".ui.activity.UpdateNameActivity"
             android:screenOrientation="portrait" />
+
         <receiver
             android:name=".common.NotificationReceiver"
             android:exported="true">
@@ -138,7 +141,7 @@
         <!-- 高德地图 -->
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="e09af6a2b26c02086e9216bd07c960ae" />
+            android:value="7cf634071033ce070a9e7525d3705cf8" />
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="577b2b55e0f55afbcb0026c6" />

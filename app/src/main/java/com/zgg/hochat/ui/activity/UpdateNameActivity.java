@@ -96,8 +96,4 @@ public class UpdateNameActivity extends BaseToolbarActivity implements View.OnCl
         finish();
     }
 
-    @Override
-    public void showUserInfoResult(GetUserInfoByIdResult result) {
-
-    }
 }

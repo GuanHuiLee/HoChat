@@ -52,25 +52,4 @@ public class AccountPresenter extends AccountContract.Presenter {
         });
     }
 
-    @Override
-    public void getUserInfoById(String id) {
-        model.getUserInfoById(id, new MyCallBack<BaseResult<GetUserInfoByIdResult>>() {
-            @Override
-            public void onSuc(Response<BaseResult<GetUserInfoByIdResult>> response) {
-                if (isAttach) {
-                    BaseResult<GetUserInfoByIdResult> body = response.body();
-                    int code = body.getCode();
-                    if (code == 200) {
-                        view.showUserInfoResult(body.getResult());
-                    } else view.showError("获取用户信息失败:" + code);
-                }
-            }
-
-            @Override
-            public void onFail(String message) {
-                if (isAttach)
-                    view.showError(message);
-            }
-        });
-    }
 }

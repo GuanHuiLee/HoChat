@@ -7,6 +7,7 @@ import com.zgg.hochat.bean.AgreeInput;
 import com.zgg.hochat.bean.InviteInput;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.RegisterInput;
+import com.zgg.hochat.bean.SetDisplayNameInput;
 import com.zgg.hochat.common.MyCallBack;
 import com.zgg.hochat.utils.Constant;
 
@@ -50,5 +51,13 @@ public class FriendShipModel extends BaseModel {
 
     public void getAllFriends(MyCallBack callBack) {
         ApiFactory.getService().getAllFriends().enqueue(callBack);
+    }
+
+    public void setDisplayName(SetDisplayNameInput input, MyCallBack callBack) {
+        ApiFactory.getService().setDisplayName(input).enqueue(callBack);
+    }
+
+    public void getUserInfoById(String id, MyCallBack callBack) {
+        ApiFactory.getService().getUserInfoById(id).enqueue(callBack);
     }
 }

@@ -352,6 +352,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
         updateFriendsList(friends);
     }
 
+    @Override
+    public void showSetDisplayNameResult(String str) {
+
+    }
+
     private void updateFriendsList(List<Friend> friendsList) {
         if (friendsList == null) return;
 
@@ -407,25 +412,30 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
             List<Friend> friendsList = new ArrayList<>();
             for (AllFriendsResult resultEntity : list) {
                 String id = resultEntity.getUser().getId();
-                String nickname = resultEntity.getUser().getNickname();
+                String displayName = resultEntity.getDisplayName();
+                String nickname;
+                if (!TextUtils.isEmpty(displayName)) {
+                    nickname = displayName;
+                } else {
+                    nickname = resultEntity.getUser().getNickname();
+                }
                 if (resultEntity.getStatus() == 20) {
                     Friend friend = new Friend(
                             id,
                             nickname,
                             Uri.parse(resultEntity.getUser().getPortraitUri()),
-                            resultEntity.getDisplayName(),
+                            displayName,
                             null, null, null, null,
                             CharacterParser.getInstance().getSpelling(nickname),
-                            CharacterParser.getInstance().getSpelling(resultEntity.getDisplayName()));
+                            CharacterParser.getInstance().getSpelling(displayName));
                     if (friend.getPortraitUri() == null || TextUtils.isEmpty(friend.getPortraitUri().toString())) {
                     }
                     friendsList.add(friend);
                 }
 
                 UserInfo userInfo = new UserInfo(id, nickname, null);
-
-                RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, nickname,
-                        Uri.parse(PortraitUtil.generateDefaultAvatar(userInfo))));
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(userInfo.getUserId(),
+                        userInfo.getName(), Uri.parse(PortraitUtil.generateDefaultAvatar(userInfo))));
             }
 
             return friendsList;
@@ -444,7 +454,11 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
         for (GetGroupsResult getGroupsResult : result) {
             GetGroupsResult.GroupBean group = getGroupsResult.getGroup();
-            Group groupInfo = new Group(group.getId(), group.getName(), null);
+
+            String id = group.getId();
+            String name = group.getName();
+            Group groupInfo = new Group(id, name, Uri.parse(PortraitUtil.generateDefaultAvatar
+                    (new UserInfo(id, name, null))));
             RongIM.getInstance().refreshGroupInfoCache(groupInfo);
         }
     }

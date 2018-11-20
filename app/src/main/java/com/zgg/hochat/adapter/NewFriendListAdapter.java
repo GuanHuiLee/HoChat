@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.bean.AllFriendsResult;
+import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
 
 import io.rong.imageloader.core.ImageLoader;
@@ -36,9 +37,10 @@ public class NewFriendListAdapter extends BaseAdapters {
             holder = (ViewHolder) convertView.getTag();
         }
         final AllFriendsResult bean = (AllFriendsResult) dataSet.get(position);
-        holder.mName.setText(bean.getUser().getNickname());
-        String portraitUri = null;
-        ImageLoader.getInstance().displayImage("", holder.mHead, App.getOptions());
+        AllFriendsResult.UserBean user = bean.getUser();
+        holder.mName.setText(user.getNickname());
+        String portraitUri = PortraitUtil.generateDefaultAvatar(new UserInfo(user.getId(), user.getNickname(), null));
+        ImageLoader.getInstance().displayImage(portraitUri, holder.mHead, App.getOptions());
         holder.mMessage.setText(bean.getMessage());
         holder.mState.setOnClickListener(new View.OnClickListener() {
             @Override

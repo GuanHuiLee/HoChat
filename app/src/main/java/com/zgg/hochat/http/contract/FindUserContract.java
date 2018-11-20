@@ -4,6 +4,7 @@ package com.zgg.hochat.http.contract;
 import com.zgg.hochat.base.BasePresenter;
 import com.zgg.hochat.base.BaseView;
 import com.zgg.hochat.bean.FindUserResult;
+import com.zgg.hochat.bean.GetUserInfoByIdResult;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterResult;
 import com.zgg.hochat.http.model.AccountModel;
@@ -24,7 +25,9 @@ public interface FindUserContract {
 
     interface View extends BaseView {
 
-        void showFindUserResult(FindUserResult result);
+        void showFindUserByPhoneResult(FindUserResult result);
+
+        void showFindUserInfoByIdResult(GetUserInfoByIdResult result);
 
     }
 
@@ -36,6 +39,8 @@ public interface FindUserContract {
 
 
         public abstract void findUserByPhone(String params);
+
+        public abstract void findUserById(String params);
 
     }
 

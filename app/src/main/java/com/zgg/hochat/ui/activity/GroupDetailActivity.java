@@ -533,7 +533,8 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
                 final GroupMember bean = list.get(position);
                 tv_username.setText(bean.getName());
 
-                ImageLoader.getInstance().displayImage(null, iv_avatar, App.getOptions());
+                ImageLoader.getInstance().displayImage(Uri.decode(PortraitUtil.
+                        generateDefaultAvatar(new UserInfo(bean.getUserId(), bean.getName(), null))), iv_avatar, App.getOptions());
                 iv_avatar.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

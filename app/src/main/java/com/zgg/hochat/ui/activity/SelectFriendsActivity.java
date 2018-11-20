@@ -500,6 +500,11 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
     }
 
     @Override
+    public void showSetDisplayNameResult(String str) {
+
+    }
+
+    @Override
     public void showGetGroupMembersResult(List<GetGroupMembersResult> result) {
         if (isAddGroupMember) {//添加群员
             addGroupMemberList = addGroupMembers(result);

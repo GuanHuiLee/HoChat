@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,19 +17,27 @@ import android.widget.TextView;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseToolbarActivity;
+import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.FindUserResult;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.bean.GetUserInfoByIdResult;
+import com.zgg.hochat.http.contract.AllFriendsContract;
 import com.zgg.hochat.http.contract.FindUserContract;
 import com.zgg.hochat.http.model.FriendShipModel;
+import com.zgg.hochat.http.presenter.AllFriendsPresenter;
 import com.zgg.hochat.http.presenter.FindUserPresenter;
 import com.zgg.hochat.utils.AMUtils;
 import com.zgg.hochat.utils.DataUtil;
+import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import io.rong.imageloader.core.ImageLoader;
+import io.rong.imlib.model.UserInfo;
 
-public class SearchFriendActivity extends BaseToolbarActivity implements FindUserContract.View {
+public class SearchFriendActivity extends BaseToolbarActivity implements FindUserContract.View, AllFriendsContract.View {
 
     private static final int CLICK_CONVERSATION_USER_PORTRAIT = 1;
     private static final int SEARCH_PHONE = 10;
@@ -51,6 +60,8 @@ public class SearchFriendActivity extends BaseToolbarActivity implements FindUse
 
     private Friend mFriend;
     private FindUserPresenter presenter;
+    private AllFriendsPresenter allFriendsPresenter;
+    private List<AllFriendsResult> result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +107,9 @@ public class SearchFriendActivity extends BaseToolbarActivity implements FindUse
     protected void initData() {
         presenter = new FindUserPresenter(this, FriendShipModel.newInstance());
         addPresenter(presenter);
+        allFriendsPresenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
+        addPresenter(allFriendsPresenter);
+        allFriendsPresenter.getAllFriends();
     }
 
     @Override
@@ -123,38 +137,67 @@ public class SearchFriendActivity extends BaseToolbarActivity implements FindUse
     private boolean isFriendOrSelf(String id) {
         String inputPhoneNumber = mEtSearch.getText().toString().trim();
         String selfPhoneNumber = DataUtil.getUser().getPhone();
-        if (inputPhoneNumber != null) {
+        if (!TextUtils.isEmpty(inputPhoneNumber)) {
             if (inputPhoneNumber.equals(selfPhoneNumber)) {
                 mFriend = new Friend(DataUtil.getUserId(), selfPhoneNumber, null);
                 return true;
             } else {
-                if (mFriend != null) {
-                    return true;
-                }
+                return isFriend(inputPhoneNumber);
+            }
+        }
+        return false;
+    }
+
+    private boolean isFriend(String phone) {
+        if (result == null)
+            return false;
+        for (AllFriendsResult allFriendsResult : result) {
+            if (phone.equals(allFriendsResult.getUser().getPhone())) {
+                return true;
             }
         }
         return false;
     }
 
     @Override
-    public void showFindUserResult(FindUserResult result) {
-        ImageLoader.getInstance().displayImage(result.getPortraitUri(), searchImage,App.getOptions());
+    public void showFindUserByPhoneResult(FindUserResult result) {
         String nickname = result.getNickname();
-        searchName.setText(nickname);
         mFriendId = result.getId();
+        String portraitUri = PortraitUtil.generateDefaultAvatar(new UserInfo(mFriendId, nickname, null));
+
+        ImageLoader.getInstance().displayImage(portraitUri, searchImage, App.getOptions());
+        searchName.setText(nickname);
         searchItem.setVisibility(View.VISIBLE);
         mFriend = new Friend(mFriendId, nickname, null);
         searchItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (!isFriendOrSelf(mFriendId)) {
-                Intent intent = new Intent(mContext, VerifyUserActivity.class);
-                intent.putExtra("userId", mFriend.getUserId());
-                startActivity(intent);
-//                } else {
-//
-//                }
+                if (!isFriendOrSelf(mFriendId)) {
+                    Intent intent = new Intent(mContext, VerifyUserActivity.class);
+                    intent.putExtra("userId", mFriend.getUserId());
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(SearchFriendActivity.this, UserDetailActivity.class);
+                    intent.putExtra("friend", mFriend);
+                    intent.putExtra("type", CLICK_CONVERSATION_USER_PORTRAIT);
+                    startActivity(intent);
+                }
             }
         });
+    }
+
+    @Override
+    public void showFindUserInfoByIdResult(GetUserInfoByIdResult result) {
+
+    }
+
+    @Override
+    public void showAllFriendsResult(List<AllFriendsResult> result) {
+        this.result = result;
+    }
+
+    @Override
+    public void showSetDisplayNameResult(String str) {
+
     }
 }

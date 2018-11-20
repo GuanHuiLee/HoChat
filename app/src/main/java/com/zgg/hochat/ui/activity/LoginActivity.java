@@ -9,16 +9,20 @@ import android.view.View;
 
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseToolbarActivity;
+import com.zgg.hochat.bean.FindUserResult;
 import com.zgg.hochat.bean.GetUserInfoByIdResult;
 import com.zgg.hochat.bean.LoginInput;
 import com.zgg.hochat.bean.LoginResult;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.TokenResult;
 import com.zgg.hochat.http.contract.AccountContract;
+import com.zgg.hochat.http.contract.FindUserContract;
 import com.zgg.hochat.http.contract.LoginContract;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.http.model.AccountModel;
+import com.zgg.hochat.http.model.FriendShipModel;
 import com.zgg.hochat.http.presenter.AccountPresenter;
+import com.zgg.hochat.http.presenter.FindUserPresenter;
 import com.zgg.hochat.http.presenter.LoginPresenter;
 import com.zgg.hochat.utils.AMUtils;
 import com.zgg.hochat.utils.ClearEditTextView;
@@ -35,13 +39,13 @@ import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 
-public class LoginActivity extends BaseToolbarActivity implements LoginContract.View, AccountContract.View {
+public class LoginActivity extends BaseToolbarActivity implements LoginContract.View, FindUserContract.View {
     @BindView(R.id.et_phone)
     ClearEditTextView etPhone;
     @BindView(R.id.et_pwd)
     ClearEditTextView etPwd;
     private LoginPresenter presenter;
-    private AccountPresenter accountPresenter;
+    private FindUserPresenter accountPresenter;
     private String phone;
     private String pwd;
     private String id;
@@ -56,7 +60,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
     protected void initUI() {
         presenter = new LoginPresenter(this, AccountModel.newInstance());
         addPresenter(presenter);
-        accountPresenter = new AccountPresenter(this, AccountModel.newInstance());
+        accountPresenter = new FindUserPresenter(this, FriendShipModel.newInstance());
         addPresenter(accountPresenter);
     }
 
@@ -146,7 +150,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
              */
             @Override
             public void onSuccess(String s) {
-                accountPresenter.getUserInfoById(id);
+                accountPresenter.findUserById(id);
             }
 
             @Override
@@ -168,13 +172,14 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
         }
     }
 
+
     @Override
-    public void showSetNickNameResult(String result) {
+    public void showFindUserByPhoneResult(FindUserResult result) {
 
     }
 
     @Override
-    public void showUserInfoResult(GetUserInfoByIdResult result) {
+    public void showFindUserInfoByIdResult(GetUserInfoByIdResult result) {
         hideProgress();
 
         String nickName = result.getNickname();

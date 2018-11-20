@@ -164,6 +164,11 @@ public class NewFriendListActivity extends BaseToolbarActivity implements
     }
 
     @Override
+    public void showSetDisplayNameResult(String str) {
+
+    }
+
+    @Override
     public void showInviteResult(ActionResult result) {
 
     }

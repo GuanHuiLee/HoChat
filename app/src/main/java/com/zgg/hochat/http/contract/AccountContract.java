@@ -26,7 +26,6 @@ public interface AccountContract {
 
         void showSetNickNameResult(String result);
 
-        void showUserInfoResult(GetUserInfoByIdResult result);
     }
 
     abstract class Presenter extends BasePresenter<View, AccountModel> {
@@ -37,8 +36,6 @@ public interface AccountContract {
 
 
         public abstract void setNickName(NickNameInput input);
-
-        public abstract void getUserInfoById(String id);
 
     }
 

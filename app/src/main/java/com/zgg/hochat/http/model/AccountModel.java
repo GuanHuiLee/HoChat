@@ -63,8 +63,6 @@ public class AccountModel extends BaseModel {
         ApiFactory.getService().setNickName(input).enqueue(callBack);
     }
 
-    public void getUserInfoById(String id, MyCallBack callBack) {
-        ApiFactory.getService().getUserInfoById(id).enqueue(callBack);
-    }
+
 
 }

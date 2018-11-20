@@ -10,6 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.zgg.hochat.App;
+import com.zgg.hochat.BuildConfig;
 import com.zgg.hochat.R;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.utils.PortraitUtil;
@@ -106,10 +107,10 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
         }
         UserInfo userInfo = new UserInfo(mContent.getUserId(), mContent.getName(), null);
         ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), viewHolder.mImageView, App.getOptions());
-//        if (context.getSharedPreferences("config", Context.MODE_PRIVATE).getBoolean("isDebug", false)) {
-//            viewHolder.tvUserId.setVisibility(View.VISIBLE);
-//            viewHolder.tvUserId.setText(list.get(position).getUserId());
-//        }
+        if (BuildConfig.DEBUG) {
+            viewHolder.tvUserId.setVisibility(View.VISIBLE);
+            viewHolder.tvUserId.setText(list.get(position).getPhoneNumber());
+        }
         return convertView;
     }
 

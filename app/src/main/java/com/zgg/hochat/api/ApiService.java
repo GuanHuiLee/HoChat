@@ -20,6 +20,7 @@ import com.zgg.hochat.bean.QuitGroupInput;
 import com.zgg.hochat.bean.RegisterInput;
 import com.zgg.hochat.bean.RegisterResult;
 import com.zgg.hochat.bean.RegisterZggInput;
+import com.zgg.hochat.bean.SetDisplayNameInput;
 import com.zgg.hochat.bean.TokenResult;
 
 import java.util.List;
@@ -109,6 +110,12 @@ public interface ApiService {
      */
     @GET("friendship/all")
     Call<BaseResult<List<AllFriendsResult>>> getAllFriends();
+
+    /**
+     * 设置备注名称
+     */
+    @POST("friendship/set_display_name")
+    Call<BaseResult<String>> setDisplayName(@Body SetDisplayNameInput input);
 
     /**
      * 创建群组

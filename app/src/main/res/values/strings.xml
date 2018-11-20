@@ -81,4 +81,5 @@
     <string name="portrait">头像</string>
     <string name="nickname">昵称</string>
     <string name="phone_number">手机号</string>
+    <string name="ac_note_info_name">备注名</string>
 </resources>

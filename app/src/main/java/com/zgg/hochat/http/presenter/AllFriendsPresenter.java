@@ -3,6 +3,7 @@ package com.zgg.hochat.http.presenter;
 import com.zgg.hochat.base.BaseResult;
 import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.FindUserResult;
+import com.zgg.hochat.bean.SetDisplayNameInput;
 import com.zgg.hochat.common.MyCallBack;
 import com.zgg.hochat.http.contract.AllFriendsContract;
 import com.zgg.hochat.http.contract.FindUserContract;
@@ -39,6 +40,28 @@ public class AllFriendsPresenter extends AllFriendsContract.Presenter {
                     if (code == 200) {
                         view.showAllFriendsResult(body.getResult());
                     } else view.showError("查找失败" + code);
+                }
+            }
+
+            @Override
+            public void onFail(String message) {
+                if (isAttach)
+                    view.showError(message);
+            }
+        });
+    }
+
+    @Override
+    public void setDisplayName(SetDisplayNameInput input) {
+        model.setDisplayName(input, new MyCallBack<BaseResult<String>>() {
+            @Override
+            public void onSuc(Response<BaseResult<String>> response) {
+                if (isAttach) {
+                    BaseResult<String> body = response.body();
+                    int code = body.getCode();
+                    if (code == 200) {
+                        view.showSetDisplayNameResult("修改成功");
+                    } else view.showError("修改备注失败：" + code);
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.zgg.hochat.ui.activity;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -33,6 +34,8 @@ import java.util.List;
 
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
+import io.rong.imlib.model.Group;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by AMing on 16/3/8.
@@ -81,6 +84,13 @@ public class GroupListActivity extends BaseToolbarActivity implements GroupContr
                         portrait,
                         String.valueOf(groups.getRole())
                 ));
+
+                GetGroupsResult.GroupBean group = groups.getGroup();
+                String id = group.getId();
+                String name = group.getName();
+                Group groupInfo = new Group(id, name, Uri.parse(PortraitUtil.generateDefaultAvatar
+                        (new UserInfo(id, name, null))));
+                RongIM.getInstance().refreshGroupInfoCache(groupInfo);
             }
             if (mGroupsList.size() > 0) {//加入数据库
 
@@ -224,7 +234,11 @@ public class GroupListActivity extends BaseToolbarActivity implements GroupContr
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.tvTitle.setText(mContent.getName());
-            ImageLoader.getInstance().displayImage(null, viewHolder.mImageView, App.getOptions());
+            String id = mContent.getGroupsId();
+            String name = mContent.getName();
+
+            ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar
+                    (new UserInfo(id, name, null)), viewHolder.mImageView, App.getOptions());
             if (context.getSharedPreferences("config", MODE_PRIVATE).getBoolean("isDebug", false)) {
                 viewHolder.groupId.setVisibility(View.VISIBLE);
                 viewHolder.groupId.setText(mContent.getGroupsId());

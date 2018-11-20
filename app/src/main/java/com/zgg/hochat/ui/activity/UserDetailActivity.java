@@ -19,10 +19,18 @@ import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
+import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.bean.MessageEvent;
+import com.zgg.hochat.http.contract.AllFriendsContract;
+import com.zgg.hochat.http.model.FriendShipModel;
+import com.zgg.hochat.http.presenter.AllFriendsPresenter;
 import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.utils.PortraitUtil;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -43,7 +51,7 @@ import io.rong.imlib.model.UserInfo;
  * Created by tiankui on 16/11/2.
  */
 
-public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener {
+public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener, AllFriendsContract.View {
     @BindView(R.id.contact_top)
     TextView mUserDisplayName;
     @BindView(R.id.contact_below)
@@ -75,6 +83,7 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     private static final int CLICK_CONVERSATION_USER_PORTRAIT = 1;
     private static final int CLICK_CONTACT_FRAGMENT_FRIEND = 2;
 
+    private AllFriendsPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,18 +100,23 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     }
 
     protected void initData() {
+        presenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
+        addPresenter(presenter);
+
         mType = getIntent().getIntExtra("type", 0);
         mGroupName = getIntent().getStringExtra("groupName");
         mFriend = getIntent().getParcelableExtra("friend");
 
         if (mFriend != null) {
+            presenter.getAllFriends();
             if (mFriend.isExitsDisplayName()) {
                 mUserNickName.setVisibility(View.VISIBLE);
-                mUserNickName.setText(getString(R.string.ac_contact_nick_name) + " " + mFriend.getName());
+                mUserNickName.setText(getString(R.string.ac_contact_nick_name) + "：" + mFriend.getName());
                 mUserDisplayName.setText(mFriend.getDisplayName());
             } else {
                 mUserDisplayName.setText(mFriend.getName());
             }
+
             UserInfo userInfo = new UserInfo(mFriend.getUserId(), mFriend.getName(), null);
             ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), mUserPortrait, App.getOptions());
         }
@@ -203,22 +217,27 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     //CallKit end 2
 
     public void setDisplayName(View view) {
-        showError("正在开发中");
-
-//        Intent intent = new Intent(mContext, NoteInformationActivity.class);
-//        intent.putExtra("friend", mFriend);
-//        startActivityForResult(intent, 99);
+        Intent intent = new Intent(mContext, NoteInformationActivity.class);
+        intent.putExtra("friend", mFriend);
+        startActivityForResult(intent, 99);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.contact_phone:
+                mPhoneString = mUserPhone.getText().toString();
                 if (!TextUtils.isEmpty(mPhoneString)) {
                     Uri telUri = Uri.parse("tel:" + mPhoneString);
                     Intent intent = new Intent(Intent.ACTION_DIAL, telUri);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showError("拨号失败");
+                    }
                 }
                 break;
             case R.id.ac_bt_add_friend:
@@ -232,7 +251,22 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            EventBus.getDefault().post(new MessageEvent(""));
 
+            String displayName = data.getStringExtra("displayName");
+            if (!TextUtils.isEmpty(displayName)) {
+                mUserNickName.setVisibility(View.VISIBLE);
+                mUserNickName.setText(getString(R.string.ac_contact_nick_name) + "：" + mFriend.getName());
+                mUserDisplayName.setText(displayName);
+                mFriend.setDisplayName(displayName);
+            } else {
+                mUserNickName.setVisibility(View.GONE);
+                mUserDisplayName.setText(mFriend.getName());
+                mUserDisplayName.setVisibility(View.VISIBLE);
+                mFriend.setDisplayName("");
+            }
+        }
     }
 
 
@@ -244,6 +278,22 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
     @Override
     protected void initUI() {
+
+    }
+
+    @Override
+    public void showAllFriendsResult(List<AllFriendsResult> result) {
+        for (AllFriendsResult friendsResult : result) {
+            AllFriendsResult.UserBean user = friendsResult.getUser();
+            if (user.getId().equals(mFriend.getUserId())) {
+                mUserPhone.setText("手机号:" + user.getPhone());
+                break;
+            }
+        }
+    }
+
+    @Override
+    public void showSetDisplayNameResult(String str) {
 
     }
 }
