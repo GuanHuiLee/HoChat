@@ -144,59 +144,71 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
     //CallKit start 2
     public void startVoice(View view) {
-        RongCallSession profile = RongCallClient.getInstance().getCallSession();
-        if (profile != null && profile.getActiveTime() > 0) {
-            Toast.makeText(mContext,
-                    profile.getMediaType() == RongCallCommon.CallMediaType.AUDIO ?
-                            getString(io.rong.callkit.R.string.rc_voip_call_audio_start_fail) :
-                            getString(io.rong.callkit.R.string.rc_voip_call_video_start_fail),
-                    Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
-            Toast.makeText(mContext, getString(io.rong.callkit.R.string.rc_voip_call_network_error), Toast.LENGTH_SHORT).show();
-            return;
-        }
+        showError("正在开发中");
 
-        Intent intent = new Intent(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO);
-        intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US));
-        intent.putExtra("targetId", mFriend.getUserId());
-        intent.putExtra("callAction", RongCallAction.ACTION_OUTGOING_CALL.getName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setPackage(getPackageName());
-        getApplicationContext().startActivity(intent);
+
+//        RongCallSession profile = RongCallClient.getInstance().getCallSession();
+//        if (profile != null && profile.getActiveTime() > 0) {
+//            Toast.makeText(mContext,
+//                    profile.getMediaType() == RongCallCommon.CallMediaType.AUDIO ?
+//                            getString(io.rong.callkit.R.string.rc_voip_call_audio_start_fail) :
+//                            getString(io.rong.callkit.R.string.rc_voip_call_video_start_fail),
+//                    Toast.LENGTH_SHORT)
+//                    .show();
+//            return;
+//        }
+//        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+//        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+//            Toast.makeText(mContext, getString(io.rong.callkit.R.string.rc_voip_call_network_error), Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        Intent intent = new Intent(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEAUDIO);
+//        intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US));
+//        intent.putExtra("targetId", mFriend.getUserId());
+//        intent.putExtra("callAction", RongCallAction.ACTION_OUTGOING_CALL.getName());
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setPackage(getPackageName());
+//        getApplicationContext().startActivity(intent);
     }
 
     public void startVideo(View view) {
-        RongCallSession profile = RongCallClient.getInstance().getCallSession();
-        if (profile != null && profile.getActiveTime() > 0) {
-            Toast.makeText(mContext,
-                    profile.getMediaType() == RongCallCommon.CallMediaType.AUDIO ?
-                            getString(io.rong.callkit.R.string.rc_voip_call_audio_start_fail) :
-                            getString(io.rong.callkit.R.string.rc_voip_call_video_start_fail),
-                    Toast.LENGTH_SHORT)
-                    .show();
-            return;
-        }
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
-            Toast.makeText(mContext, getString(io.rong.callkit.R.string.rc_voip_call_network_error), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        Intent intent = new Intent(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEVIDEO);
-        intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US));
-        intent.putExtra("targetId", mFriend.getUserId());
-        intent.putExtra("callAction", RongCallAction.ACTION_OUTGOING_CALL.getName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setPackage(getPackageName());
-        getApplicationContext().startActivity(intent);
+        showError("正在开发中");
+
+//        RongCallSession profile = RongCallClient.getInstance().getCallSession();
+//        if (profile != null && profile.getActiveTime() > 0) {
+//            Toast.makeText(mContext,
+//                    profile.getMediaType() == RongCallCommon.CallMediaType.AUDIO ?
+//                            getString(io.rong.callkit.R.string.rc_voip_call_audio_start_fail) :
+//                            getString(io.rong.callkit.R.string.rc_voip_call_video_start_fail),
+//                    Toast.LENGTH_SHORT)
+//                    .show();
+//            return;
+//        }
+//        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+//        if (networkInfo == null || !networkInfo.isConnected() || !networkInfo.isAvailable()) {
+//            Toast.makeText(mContext, getString(io.rong.callkit.R.string.rc_voip_call_network_error), Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        Intent intent = new Intent(RongVoIPIntent.RONG_INTENT_ACTION_VOIP_SINGLEVIDEO);
+//        intent.putExtra("conversationType", Conversation.ConversationType.PRIVATE.getName().toLowerCase(Locale.US));
+//        intent.putExtra("targetId", mFriend.getUserId());
+//        intent.putExtra("callAction", RongCallAction.ACTION_OUTGOING_CALL.getName());
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setPackage(getPackageName());
+//        getApplicationContext().startActivity(intent);
     }
     //CallKit end 2
 
+    public void setDisplayName(View view) {
+        showError("正在开发中");
+
+//        Intent intent = new Intent(mContext, NoteInformationActivity.class);
+//        intent.putExtra("friend", mFriend);
+//        startActivityForResult(intent, 99);
+    }
 
     @Override
     public void onClick(View v) {

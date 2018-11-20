@@ -67,11 +67,11 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation project(':CallKit')
     implementation project(':CallLib')
+//    implementation project(':RedPacket')
+    implementation 'com.tencent:mmkv:1.0.12'
     implementation project(':IMKit')
     implementation project(':IMLib')
     implementation project(':RCSticker')
-//    implementation project(':RedPacket')
-    implementation 'com.tencent:mmkv:1.0.12'
     implementation 'com.squareup.retrofit2:retrofit:2.3.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     implementation 'com.squareup.okhttp3:okhttp:3.10.0'
@@ -79,4 +79,5 @@ dependencies {
     implementation 'com.huawei.android.hms:push:2.6.1.301'
     implementation 'com.android.support:recyclerview-v7:27.1.1'
     implementation 'org.greenrobot:eventbus:3.1.1'
+    implementation 'com.pnikosis:materialish-progress:1.7'
 }

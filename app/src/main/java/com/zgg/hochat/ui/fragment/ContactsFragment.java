@@ -133,8 +133,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     public void onMessageEvent(MessageEvent event) {
         if (event.getMessage().equals("group")) {
             groupsPresenter.getGroups();
-        } else
+        } else {
             presenter.getAllFriends();
+            updatePersonalUI();
+        }
     }
 
     @Override
@@ -305,13 +307,13 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
 
     private void updatePersonalUI() {
-        mId = DataUtil.getUser().getPhone();
-        mCacheName = mId;
+        mId = DataUtil.getUserId();
+        mCacheName = DataUtil.getNickName();
         mNameTextView.setText(mCacheName);
         if (!TextUtils.isEmpty(mId)) {
-//            UserInfo userInfo = new UserInfo(mId, mCacheName, Uri.parse(header));
-//            String portraitUri = SealUserInfoManager.getInstance().getPortraitUri(userInfo);
-//            ImageLoader.getInstance().displayImage(portraitUri, mSelectableRoundedImageView, App.getOptions());
+            UserInfo userInfo = new UserInfo(mId, mCacheName, null);
+            String portraitUri = PortraitUtil.generateDefaultAvatar(userInfo);
+            ImageLoader.getInstance().displayImage(portraitUri, mSelectableRoundedImageView, App.getOptions());
         }
     }
 
@@ -420,7 +422,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
                     friendsList.add(friend);
                 }
 
-                RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, nickname, null));
+                UserInfo userInfo = new UserInfo(id, nickname, null);
+
+                RongIM.getInstance().refreshUserInfoCache(new UserInfo(id, nickname,
+                        Uri.parse(PortraitUtil.generateDefaultAvatar(userInfo))));
             }
 
             return friendsList;

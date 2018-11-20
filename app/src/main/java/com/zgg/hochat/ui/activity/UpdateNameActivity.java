@@ -14,12 +14,15 @@ import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.GetUserInfoByIdResult;
+import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.bean.NickNameInput;
 import com.zgg.hochat.http.contract.AccountContract;
 import com.zgg.hochat.http.model.AccountModel;
 import com.zgg.hochat.http.presenter.AccountPresenter;
 import com.zgg.hochat.utils.ClearEditTextView;
 import com.zgg.hochat.utils.DataUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
@@ -60,6 +63,7 @@ public class UpdateNameActivity extends BaseToolbarActivity implements View.OnCl
 
     @Override
     protected void initToolbar(Toolbar toolbar) {
+        toolbar.setTitle("昵称更改");
         TextView tv_other = toolbar.findViewById(R.id.toolbar_other);
         tv_other.setText("确认");
         tv_other.setOnClickListener(this);
@@ -70,6 +74,7 @@ public class UpdateNameActivity extends BaseToolbarActivity implements View.OnCl
     public void onClick(View v) {
         newName = mNameEditText.getText().toString().trim();
         if (!TextUtils.isEmpty(newName)) {
+            showProgress("更改中");
             accountPresenter.setNickName(new NickNameInput(newName));
         } else {
             showError("昵称不能为空");

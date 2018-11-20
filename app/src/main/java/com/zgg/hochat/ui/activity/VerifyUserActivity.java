@@ -32,7 +32,7 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
 
     @Override
     protected void initUI() {
-        ct_mark.setText("你好，我是" + DataUtil.getUser().getPhone());
+        ct_mark.setText("你好，我是" + DataUtil.getNickName());
         userId = getIntent().getStringExtra("userId");
     }
 
@@ -50,6 +50,7 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
         tv_other.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                showProgress("请求中");
                 presenter.invite(new InviteInput(userId, ct_mark.getText().toString()));
             }
         });
@@ -57,7 +58,19 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
 
     @Override
     public void showInviteResult(ActionResult result) {
-        showError(result.getAction());
+        String msg = "";
+        switch (result.getAction()) {
+            case "Added":
+                msg = "已添加";
+                break;
+            case "None":
+                msg = "在对方黑名单中";
+                break;
+            case "Sent":
+                msg = "请求已发送";
+                break;
+        }
+        showError(msg);
         finish();
     }
 

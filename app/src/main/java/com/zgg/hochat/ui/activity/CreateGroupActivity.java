@@ -116,6 +116,7 @@ public class CreateGroupActivity extends BaseToolbarActivity implements View.OnC
                     }
                 }
                 if (groupIds.size() > 1) {//创建群
+                    showProgress("正在创建中");
                     groupsPresenter.createGroup(new CreateCroupInput(mGroupName, groupIds));
                 }
 

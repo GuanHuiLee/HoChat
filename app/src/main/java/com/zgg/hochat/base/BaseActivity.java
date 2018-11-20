@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.anthonycr.grant.PermissionsManager;
 import com.zgg.hochat.utils.ToastUtils;
+import com.zgg.hochat.widget.MLoadingDialog;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -140,12 +141,15 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         presenterList.remove(BasePresenter);
     }
 
+
     @Override
     public void showProgress(String message) {
+        MLoadingDialog.show(this, message);
     }
 
     @Override
     public void hideProgress() {
+        MLoadingDialog.dismiss();
     }
 
     @Override

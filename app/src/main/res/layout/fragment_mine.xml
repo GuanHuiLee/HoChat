@@ -202,7 +202,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="14dp"
-            android:drawableLeft="@mipmap/mine_about"
+            android:drawableLeft="@mipmap/exit_login"
             android:drawablePadding="14sp"
             android:text="@string/mine_exit"
             android:textColor="@color/text_color"

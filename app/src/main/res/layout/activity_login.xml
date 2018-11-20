@@ -24,7 +24,7 @@
         android:layout_marginLeft="56dp"
         android:layout_marginTop="30dp"
         android:layout_marginRight="56dp"
-        android:drawableLeft="@mipmap/ic_login_phone"
+        android:drawableLeft="@mipmap/ic_login_password"
         android:hint="请输入密码"
         android:inputType="textPassword" />
 
@@ -40,8 +40,9 @@
         android:id="@+id/tv_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="60dp"
         android:gravity="end"
-        android:text="注册" />
+        android:text="新用户"
+        android:textSize="15sp" />
 </LinearLayout>

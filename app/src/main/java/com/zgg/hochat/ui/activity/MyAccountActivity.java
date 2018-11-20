@@ -15,9 +15,12 @@ import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.utils.DataUtil;
+import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
 
 import io.rong.imageloader.core.ImageLoader;
+import io.rong.imkit.RongIM;
+import io.rong.imlib.model.UserInfo;
 
 
 public class MyAccountActivity extends BaseToolbarActivity implements View.OnClickListener {
@@ -28,6 +31,7 @@ public class MyAccountActivity extends BaseToolbarActivity implements View.OnCli
     private TextView mName;
     private String imageUrl;
     private Uri selectUri;
+    private boolean isEdit;
 
 
     @Override
@@ -64,16 +68,28 @@ public class MyAccountActivity extends BaseToolbarActivity implements View.OnCli
         if (!TextUtils.isEmpty(cachePhone)) {
             mPhone.setText("+86 " + cachePhone);
         }
+        setIcon();
+    }
+
+    private void setIcon() {
         String cacheName = DataUtil.getNickName();
+        UserInfo userInfo = new UserInfo(DataUtil.getUserId(), cacheName, null);
+
         if (!TextUtils.isEmpty(cacheName)) {
             mName.setText(cacheName);
-            ImageLoader.getInstance().displayImage(null, mImageView, App.getOptions());
+            ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), mImageView, App.getOptions());
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_OK);
+        super.onBackPressed();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        setResult(RESULT_OK);
         finish();
         return super.onOptionsItemSelected(item);
     }
@@ -96,7 +112,8 @@ public class MyAccountActivity extends BaseToolbarActivity implements View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            mName.setText(DataUtil.getNickName());
+            isEdit = true;
+            setIcon();
         }
     }
 

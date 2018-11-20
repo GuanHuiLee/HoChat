@@ -23,7 +23,7 @@ public abstract class MyCallBack<T> implements Callback<T> {
             try {
                 String error = "";
                 if (response.code() == 404) {
-                    error = "请求地址找不到";
+                    error = "未找到";
                 } else if (response.code() >= 500) {
                     error = "服务端响应出错";
                 } else {

@@ -12,17 +12,22 @@ import android.widget.TextView;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseFragment;
+import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.ui.activity.LoginActivity;
 import com.zgg.hochat.ui.activity.MyAccountActivity;
 import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
 
+import org.greenrobot.eventbus.EventBus;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
+
+import static android.app.Activity.RESULT_OK;
 
 
 /**
@@ -75,8 +80,17 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
                 mContext.startActivity(loginActivityIntent);
                 break;
             case R.id.start_user_profile:
-                startActivity(new Intent(mContext, MyAccountActivity.class));
+                startActivityForResult(new Intent(mContext, MyAccountActivity.class), 3);
                 break;
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            EventBus.getDefault().post(new MessageEvent(""));
+            initUI();
         }
     }
 }

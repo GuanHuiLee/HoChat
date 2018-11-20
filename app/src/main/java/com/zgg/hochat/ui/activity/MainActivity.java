@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
     ImageView iv_search;
 
     @BindView(R.id.seal_num)
-     DragPointView mUnreadNumView;
+    DragPointView mUnreadNumView;
 
     private FragmentManager fragmentManager;
 
@@ -234,10 +234,6 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
         }
     }
 
-    @Override
-    public void onBackPressed() {
-
-    }
 
     private Fragment initConversationList() {
         if (mConversationListFragment == null) {

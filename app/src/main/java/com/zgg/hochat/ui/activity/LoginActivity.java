@@ -62,12 +62,20 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
 
     @Override
     protected void initData() {
+        RegisterInput user = DataUtil.getUser();
+        String phone = user.getPhone();
+        etPhone.setText(phone);
+        String password = user.getPassword();
+        etPwd.setText(password);
 
+        if (!TextUtils.isEmpty(phone)) {
+            etPhone.setSelection(phone.length());
+        }
     }
 
     @Override
     protected void initToolbar(Toolbar toolbar) {
-
+        toolbar.setTitle("登录");
     }
 
     @OnClick({R.id.btn_login, R.id.tv_register})
@@ -95,6 +103,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
             return;
         }
 
+        showProgress("登录中");
         presenter.login(new LoginInput("86", phone, pwd));
     }
 
@@ -142,7 +151,7 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                showError("登录失败：" + errorCode);
+                showError("IM连接失败：" + errorCode);
             }
         });
     }
@@ -166,6 +175,8 @@ public class LoginActivity extends BaseToolbarActivity implements LoginContract.
 
     @Override
     public void showUserInfoResult(GetUserInfoByIdResult result) {
+        hideProgress();
+
         String nickName = result.getNickname();
         String portraitUri = result.getPortraitUri();
         DataUtil.setNickName(nickName);

@@ -12,11 +12,13 @@ import android.widget.TextView;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.utils.PortraitUtil;
 import com.zgg.hochat.widget.SelectableRoundedImageView;
 
 import java.util.List;
 
 import io.rong.imageloader.core.ImageLoader;
+import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by AMing on 16/1/14.
@@ -89,7 +91,7 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
             if (!TextUtils.isEmpty(letterFirst)) {
                 if (!isLetterDigitOrChinese(letterFirst)) {
                     letterFirst = "#";
-                }else {
+                } else {
                     letterFirst = String.valueOf(letterFirst.toUpperCase().charAt(0));
                 }
             }
@@ -102,8 +104,8 @@ public class FriendListAdapter extends BaseAdapter implements SectionIndexer {
         } else {
             viewHolder.tvTitle.setText(this.list.get(position).getName());
         }
-//        String portraitUri = SealUserInfoManager.getInstance().getPortraitUri(list.get(position));
-//        ImageLoader.getInstance().displayImage(portraitUri, viewHolder.mImageView, App.getOptions());
+        UserInfo userInfo = new UserInfo(mContent.getUserId(), mContent.getName(), null);
+        ImageLoader.getInstance().displayImage(PortraitUtil.generateDefaultAvatar(userInfo), viewHolder.mImageView, App.getOptions());
 //        if (context.getSharedPreferences("config", Context.MODE_PRIVATE).getBoolean("isDebug", false)) {
 //            viewHolder.tvUserId.setVisibility(View.VISIBLE);
 //            viewHolder.tvUserId.setText(list.get(position).getUserId());

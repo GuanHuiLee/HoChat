@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import com.anthonycr.grant.PermissionsManager;
 import com.zgg.hochat.R;
 import com.zgg.hochat.utils.ToastUtils;
+import com.zgg.hochat.widget.MLoadingDialog;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -153,14 +154,17 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements B
 
     @Override
     public void showProgress(String message) {
+        MLoadingDialog.show(this, message);
     }
 
     @Override
     public void hideProgress() {
+        MLoadingDialog.dismiss();
     }
 
     @Override
     public void showError(String message) {
+        hideProgress();
         ToastUtils.showShort(message);
     }
 

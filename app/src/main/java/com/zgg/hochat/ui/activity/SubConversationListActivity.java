@@ -6,18 +6,22 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.SubConversationListAdapterEx;
+import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 
+import butterknife.BindView;
 import io.rong.imkit.RongContext;
 import io.rong.imkit.fragment.SubConversationListFragment;
 
-public class SubConversationListActivity extends BaseToolbarActivity {
+public class SubConversationListActivity extends BaseActivity {
 
     private String type;
-    private Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +34,22 @@ public class SubConversationListActivity extends BaseToolbarActivity {
         transaction.add(R.id.rong_content, fragment);
         transaction.commit();
 
+        initToolbar();
+        setSupportActionBar(toolbar);
+
+    }
+
+    @Override
+    protected void initUI() {
+
+    }
+
+    @Override
+    protected void initData() {
+
+    }
+
+    protected void initToolbar() {
         Intent intent = getIntent();
         if (intent.getData() == null) {
             return;
@@ -54,17 +74,11 @@ public class SubConversationListActivity extends BaseToolbarActivity {
     }
 
     @Override
-    protected void initUI() {
-
-    }
-
-    @Override
-    protected void initData() {
-
-    }
-
-    @Override
-    protected void initToolbar(Toolbar toolbar) {
-        this.toolbar = toolbar;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

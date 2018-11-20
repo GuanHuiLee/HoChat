@@ -34,8 +34,6 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     private RegisterPresenter presenter;
     private RegisterInput registerInput;
-    private String phone;
-    private String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +54,7 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
 
     @Override
     protected void initToolbar(Toolbar toolbar) {
-
+        toolbar.setTitle("注册");
     }
 
     @OnClick({R.id.btn_register})
@@ -69,8 +67,8 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
     }
 
     private void register() {
-        phone = et_phone.getText().toString();
-        password = et_pwd.getText().toString();
+        String phone = et_phone.getText().toString();
+        String password = et_pwd.getText().toString();
         if (!AMUtils.isMobile(phone)) {
             showError("请输入正确手机号");
             return;
@@ -80,21 +78,32 @@ public class RegisterActivity extends BaseToolbarActivity implements RegisterCon
             return;
         }
 
+        showProgress("注册中");
+
         registerInput = new RegisterInput(phone, password);
         presenter.register(registerInput);
     }
 
     @Override
     public void showRegisterResult(RegisterResult result) {
-        presenter.registerZgg(new RegisterZggInput(phone, password));
+        registerSuccess();
+
+//        presenter.registerZgg(new RegisterZggInput(registerInput.getPhone(), registerInput.getPassword()));//注册用户到车房通系统，仅支持内网访问
     }
 
-    @Override
-    public void showRegisterZggResult(String result) {
+    /**
+     * 注册成功返回
+     */
+    private void registerSuccess() {
         showError("注册成功");
         Intent intent = new Intent();
         intent.putExtra("data", registerInput);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void showRegisterZggResult(String result) {
+        registerSuccess();
     }
 }
