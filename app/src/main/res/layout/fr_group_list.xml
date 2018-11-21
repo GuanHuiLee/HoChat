@@ -44,6 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="10dp"
                 android:text="@string/fr_group_list_not_join_the_group"
                 android:textColor="@color/group_list_gray"
                 android:visibility="gone" />

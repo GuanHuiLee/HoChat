@@ -228,6 +228,7 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                showProgress("退出中");
                                 groupsPresenter.quitGroup(new QuitGroupInput(fromConversationId));
                             }
                         }).show();
@@ -239,6 +240,7 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                showProgress("解散群组中");
                                 groupsPresenter.dismissGroup(new QuitGroupInput(fromConversationId));
                             }
                         }).show();
@@ -432,11 +434,13 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
             }
         });
         showError(getString(R.string.quit_success));
+        setResult(RESULT_OK);
         finish();
     }
 
     @Override
     public void showDismissGroupResult(String result) {
+        showError("群组解散成功");
         RongIM.getInstance().getConversation(Conversation.ConversationType.GROUP, fromConversationId, new RongIMClient.ResultCallback<Conversation>() {
             @Override
             public void onSuccess(Conversation conversation) {
@@ -458,6 +462,8 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
 
             }
         });
+        setResult(RESULT_OK);
+        finish();
     }
 
     @Override
@@ -642,6 +648,7 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
 
     @Override
     public void onBackPressed() {
+        setResult(RESULT_OK);
         super.onBackPressed();
     }
 }

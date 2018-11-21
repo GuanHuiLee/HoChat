@@ -18,6 +18,7 @@ import com.zgg.hochat.bean.CreateGroupResult;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.bean.GetGroupDetailResult;
 import com.zgg.hochat.bean.GetGroupsResult;
+import com.zgg.hochat.bean.Groups;
 import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.http.contract.GroupContract;
 import com.zgg.hochat.http.model.GroupModel;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import io.rong.imkit.RongIM;
 import io.rong.imkit.emoticon.AndroidEmoji;
 import io.rong.imkit.widget.AsyncImageView;
 
@@ -144,10 +146,11 @@ public class CreateGroupActivity extends BaseToolbarActivity implements View.OnC
 
     @Override
     public void showCreateGroupResult(CreateGroupResult result) {
-        showError("创建成功");
-        finish();
+        hideProgress();
+        RongIM.getInstance().startGroupChat(CreateGroupActivity.this, result.getId(), mGroupName);
 
         EventBus.getDefault().post(new MessageEvent("group"));
+        finish();
     }
 
     @Override

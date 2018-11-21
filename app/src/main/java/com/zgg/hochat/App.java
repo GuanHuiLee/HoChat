@@ -3,8 +3,20 @@ package com.zgg.hochat;
 import android.app.ActivityManager;
 import android.app.Application;
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
 
+import com.scwang.smartrefresh.header.MaterialHeader;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshFooterCreator;
+import com.scwang.smartrefresh.layout.api.DefaultRefreshHeaderCreator;
+import com.scwang.smartrefresh.layout.api.RefreshFooter;
+import com.scwang.smartrefresh.layout.api.RefreshHeader;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
+import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.mmkv.MMKV;
+import com.zgg.hochat.common.AppContext;
 
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
@@ -31,6 +43,7 @@ public class App extends Application {
              * IMKit SDK调用第一步 初始化
              */
             RongIM.init(this);
+            AppContext.init(this);
         }
         MMKV.initialize(this);
 
@@ -73,5 +86,26 @@ public class App extends Application {
 
     public static final App getApplication() {
         return mApp;
+    }
+
+    static {
+        //设置全局的Header构建器
+        SmartRefreshLayout.setDefaultRefreshHeaderCreator(new DefaultRefreshHeaderCreator() {
+            @NonNull
+            @Override
+            public RefreshHeader createRefreshHeader(@NonNull Context context, @NonNull RefreshLayout layout) {
+//                return new ClassicsHeader(context);
+                return new MaterialHeader(context).setColorSchemeColors(Color.parseColor("#248bfe"));
+            }
+        });
+
+        //设置全局的Footer构建器
+        SmartRefreshLayout.setDefaultRefreshFooterCreator(new DefaultRefreshFooterCreator() {
+            @NonNull
+            @Override
+            public RefreshFooter createRefreshFooter(@NonNull Context context, @NonNull RefreshLayout layout) {
+                return new ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Translate);
+            }
+        });
     }
 }

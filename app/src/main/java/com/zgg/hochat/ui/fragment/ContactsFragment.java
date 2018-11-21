@@ -1,5 +1,7 @@
 package com.zgg.hochat.ui.fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.FriendListAdapter;
@@ -56,7 +61,9 @@ import io.rong.imlib.model.UserInfo;
  * tab 2 通讯录的 Fragment
  * Created by Bob on 2015/1/25.
  */
-public class ContactsFragment extends BaseFragment implements View.OnClickListener, AllFriendsContract.View, GroupContract.View {
+public class ContactsFragment extends BaseFragment implements View.OnClickListener,
+        AllFriendsContract.View, GroupContract.View,
+        OnRefreshLoadMoreListener {
     @BindView(R.id.list_view)
     ListView mListView;
     @BindView(R.id.sidebar)
@@ -68,6 +75,9 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
      */
     @BindView(R.id.group_dialog)
     TextView mDialogTextView;
+
+    @BindView(R.id.refreshLayout)
+    SmartRefreshLayout refreshLayout;
 
     TextView mUnreadTextView;
 
@@ -131,13 +141,29 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
-        if (event.getMessage().equals("group")) {
+        String message = event.getMessage();
+        if (message.equals("group")) {
             groupsPresenter.getGroups();
+        } else if (message.equals("new_request")) {
+            showDia();
         } else {
             presenter.getAllFriends();
             updatePersonalUI();
         }
     }
+
+    private void showDia() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("您有新的好友请求，是否立即处理")
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        getContext().startActivity(new Intent(getContext(), NewFriendListActivity.class));
+                    }
+                }).show();
+    }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -282,6 +308,10 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
             }
         });
+
+        refreshLayout.setEnableLoadMore(false);
+        refreshLayout.setOnRefreshLoadMoreListener(this);
+        refreshLayout.autoRefresh();
     }
 
     private void updateUI() {
@@ -298,11 +328,9 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 //        });
         presenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
         addPresenter(presenter);
-        presenter.getAllFriends();
 
         groupsPresenter = new GroupPresenter(this, GroupModel.newInstance());
         addPresenter(groupsPresenter);
-        groupsPresenter.getGroups();
     }
 
 
@@ -348,6 +376,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Override
     public void showAllFriendsResult(List<AllFriendsResult> result) {
+        refreshLayout.finishRefresh();
         List<Friend> friends = addFriends(result);
         updateFriendsList(friends);
     }
@@ -476,5 +505,16 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     @Override
     public void showGetGroupDetailResult(GetGroupDetailResult groupDetail) {
 
+    }
+
+    @Override
+    public void onLoadMore(RefreshLayout refreshLayout) {
+
+    }
+
+    @Override
+    public void onRefresh(RefreshLayout refreshLayout) {
+        presenter.getAllFriends();
+        groupsPresenter.getGroups();
     }
 }

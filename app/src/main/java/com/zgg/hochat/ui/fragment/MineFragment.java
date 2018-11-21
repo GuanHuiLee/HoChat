@@ -73,11 +73,12 @@ public class MineFragment extends BaseFragment implements View.OnClickListener {
         switch (view.getId()) {
             case R.id.mine_exit:
                 DataUtil.setToken("");
+                DataUtil.setCookie("");
                 RongIM.getInstance().logout();
                 Intent loginActivityIntent = new Intent();
                 loginActivityIntent.setClass(mContext, LoginActivity.class);
                 loginActivityIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(loginActivityIntent);
+                mContext.startActivity(loginActivityIntent); 
                 break;
             case R.id.start_user_profile:
                 startActivityForResult(new Intent(mContext, MyAccountActivity.class), 3);

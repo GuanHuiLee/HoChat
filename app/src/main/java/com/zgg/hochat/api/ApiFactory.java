@@ -3,6 +3,7 @@ package com.zgg.hochat.api;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
 import com.zgg.hochat.utils.Constant;
 import com.zgg.hochat.utils.DataUtil;
@@ -44,7 +45,7 @@ public class ApiFactory {
                         List<Cookie> cookies = new ArrayList<>();
                         String token = DataUtil.getCookie();
 
-                        if (token != null) {
+                        if (!TextUtils.isEmpty(token)) {
                             Cookie cookie = Cookie.parse(url, token);
                             cookies.add(cookie);
                         }

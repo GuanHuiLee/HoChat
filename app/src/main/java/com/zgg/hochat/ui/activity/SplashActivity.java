@@ -47,6 +47,7 @@ public class SplashActivity extends BaseActivity {
                 @Override
                 public void onTokenIncorrect() {
                     showError("token错误");
+                    goToLogin();
                 }
 
                 /**

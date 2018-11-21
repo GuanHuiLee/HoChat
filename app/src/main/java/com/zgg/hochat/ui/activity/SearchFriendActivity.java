@@ -152,7 +152,7 @@ public class SearchFriendActivity extends BaseToolbarActivity implements FindUse
         if (result == null)
             return false;
         for (AllFriendsResult allFriendsResult : result) {
-            if (phone.equals(allFriendsResult.getUser().getPhone())) {
+            if (phone.equals(allFriendsResult.getUser().getPhone()) && allFriendsResult.getStatus() == 20) {
                 return true;
             }
         }

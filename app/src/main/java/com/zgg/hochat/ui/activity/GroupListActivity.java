@@ -68,6 +68,11 @@ public class GroupListActivity extends BaseToolbarActivity implements GroupContr
     protected void initData() {
         presenter = new GroupPresenter(this, GroupModel.newInstance());
         addPresenter(presenter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         presenter.getGroups();
     }
 
@@ -159,6 +164,8 @@ public class GroupListActivity extends BaseToolbarActivity implements GroupContr
             });
         } else {
             mNoGroups.setVisibility(View.VISIBLE);
+            mTextView.setVisibility(View.GONE);
+            mGroupListView.setAdapter(new GroupAdapter(mContext, new ArrayList<Groups>()));
         }
     }
 

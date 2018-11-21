@@ -59,7 +59,6 @@ public class NewFriendListActivity extends BaseToolbarActivity implements
     }
 
     protected void initView() {
-        setTitle(R.string.new_friends);
         shipListView = (ListView) findViewById(R.id.shiplistview);
         isData = (TextView) findViewById(R.id.isData);
     }

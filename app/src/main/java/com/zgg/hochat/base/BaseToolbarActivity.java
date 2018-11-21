@@ -2,8 +2,10 @@ package com.zgg.hochat.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -162,10 +164,13 @@ public abstract class BaseToolbarActivity extends AppCompatActivity implements B
         MLoadingDialog.dismiss();
     }
 
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     public void showError(String message) {
-        hideProgress();
         ToastUtils.showShort(message);
+        if (!isDestroyed()) {
+            hideProgress();
+        }
     }
 
 

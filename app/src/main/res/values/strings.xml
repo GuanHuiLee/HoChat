@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">狐说</string>
+    <string name="app_name_1">狐说</string>
     <string name="str_tab_contacts">联系人</string>
     <string name="str_tab_chat">消息</string>
     <string name="str_tab_find">发现</string>

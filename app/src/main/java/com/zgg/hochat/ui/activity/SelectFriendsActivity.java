@@ -315,6 +315,7 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                showProgress("移除中");
                                 groupMemberPresenter.kickGroupMembers(new AddGroupMemberInput(groupId, startDisList));
                             }
                         }).show();
@@ -327,6 +328,7 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
 
             } else if (addGroupMemberList != null && startDisList != null && startDisList.size() > 0) {//添加群成员
                 //TODO 选中添加成员的数据添加到服务端数据库  返回本地也需要更改
+                showProgress("添加中");
                 groupMemberPresenter.addGroupMembers(new AddGroupMemberInput(groupId, startDisList));
 
             } else if (addDisList != null && startDisList != null && startDisList.size() > 0) {//添加讨论组成员

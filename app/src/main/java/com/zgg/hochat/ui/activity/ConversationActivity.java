@@ -505,6 +505,9 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            finish();
+        }
 
     }
 
@@ -603,9 +606,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
                 return;
             }
             intent.putExtra("TargetId", mTargetId);
-            if (intent != null) {
-                startActivityForResult(intent, 500);
-            }
+            startActivityForResult(intent, 500);
 
         }
     }

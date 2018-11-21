@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.orhanobut.logger.Logger;
 import com.zgg.hochat.BuildConfig;
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.ConversationListAdapterEx;
@@ -102,14 +103,13 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
         RongIM.getInstance().addUnReadMessageCountChangedObserver(this, conversationTypes);
         getConversationPush();// 获取 push 的 id 和 target
-        getPushMessage();
+        getPushMessage(getIntent());
     }
 
     /**
      * 得到不落地 push 消息
      */
-    private void getPushMessage() {
-        Intent intent = getIntent();
+    private void getPushMessage(Intent intent) {
         if (intent != null && intent.getData() != null && intent.getData().getScheme().equals("rong")) {
             String path = intent.getData().getPath();
             if (path.contains("push_message")) {
@@ -134,8 +134,22 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                         });
                     }
                 }
+                //该条推送消息的内容。
+                String content = intent.getData().getQueryParameter("pushContent");
+                //标识该推送消息的唯一 Id。
+                String id = intent.getData().getQueryParameter("pushId");
+                //用户自定义参数 json 格式，解析后用户可根据自己定义的 Key 、Value 值进行业务处理。
+                String extra = intent.getData().getQueryParameter("extra");
+                //统计通知栏点击事件.
+                Logger.d("--content:" + content + "--id:" + id + "---extra:" + extra);
             }
         }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        getPushMessage(intent);
     }
 
     private void getConversationPush() {
@@ -247,7 +261,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                         .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
                         .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
                         .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
-//                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
+                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
                         .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(), "true")
                         .build();
                 mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
@@ -265,7 +279,7 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
                         .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//群组
                         .appendQueryParameter(Conversation.ConversationType.PUBLIC_SERVICE.getName(), "false")//公共服务号
                         .appendQueryParameter(Conversation.ConversationType.APP_PUBLIC_SERVICE.getName(), "false")//订阅号
-//                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
+                        .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "true")//系统
                         .build();
                 mConversationsTypes = new Conversation.ConversationType[]{Conversation.ConversationType.PRIVATE,
                         Conversation.ConversationType.GROUP,
