@@ -16,11 +16,15 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.mmkv.MMKV;
+import com.zgg.hochat.bean.TestMessage;
 import com.zgg.hochat.common.AppContext;
+import com.zgg.hochat.common.ContactNotificationMessageProvider;
+import com.zgg.hochat.common.TestMessageProvider;
 
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.widget.provider.RealTimeLocationMessageProvider;
 
 public class App extends Application {
     private static App mApp = null;
@@ -42,8 +46,20 @@ public class App extends Application {
             /**
              * IMKit SDK调用第一步 初始化
              */
+            RongIM.setServerInfo("nav.cn.ronghub.com", "up.qbox.me");
             RongIM.init(this);
             AppContext.init(this);
+
+            try {
+                RongIM.registerMessageTemplate(new ContactNotificationMessageProvider());
+                RongIM.registerMessageTemplate(new RealTimeLocationMessageProvider());
+                RongIM.registerMessageType(TestMessage.class);
+                RongIM.registerMessageTemplate(new TestMessageProvider());
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         MMKV.initialize(this);
 

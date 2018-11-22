@@ -81,5 +81,8 @@
     <string name="portrait">头像</string>
     <string name="nickname">昵称</string>
     <string name="phone_number">手机号</string>
+    <string name="contact_notification_someone_agree_your_request">%1$s已同意你的好友请求</string>
+    <string name="contact_notification_agree_your_request">对方已同意你的好友请求</string>
+    <string name="de_dialog_item_message_delete">删除消息</string>
     <string name="ac_note_info_name">备注名</string>
 </resources>

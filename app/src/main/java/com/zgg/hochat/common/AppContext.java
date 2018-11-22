@@ -12,8 +12,13 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
+import com.zgg.hochat.api.ApiFactory;
+import com.zgg.hochat.base.BaseResult;
 import com.zgg.hochat.bean.ContactNotificationMessageData;
 import com.zgg.hochat.bean.Friend;
+import com.zgg.hochat.bean.GetGroupDetailResult;
+import com.zgg.hochat.bean.GetGroupMembersResult;
+import com.zgg.hochat.bean.GroupMember;
 import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.ui.activity.LoginActivity;
 import com.zgg.hochat.ui.activity.NewFriendListActivity;
@@ -25,6 +30,7 @@ import com.zgg.hochat.widget.pinyin.CharacterParser;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import io.rong.calllib.RongCallClient;
@@ -45,7 +51,10 @@ import io.rong.imlib.model.UserInfo;
 import io.rong.message.ContactNotificationMessage;
 import io.rong.message.GroupNotificationMessage;
 import io.rong.message.ImageMessage;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.HttpException;
+import retrofit2.Response;
 
 /**
  * 融云相关监听 事件集合类
@@ -133,7 +142,7 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
         RongIM.getInstance().enableNewComingMessageIcon(true);
         RongIM.getInstance().enableUnreadMessageIcon(true);
         RongIM.getInstance().setGroupMembersProvider(this);
-        //RongIM.setGroupUserInfoProvider(this, true);//seal app暂时未使用这种方式,目前使用UserInfoProvider
+//        RongIM.setGroupUserInfoProvider(this, true);//seal app暂时未使用这种方式,目前使用UserInfoProvider
     }
 
 
@@ -441,17 +450,6 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
         }
     }
 
-    public void pushActivity(Activity activity) {
-        mActivities.add(activity);
-    }
-
-    public void popActivity(Activity activity) {
-        if (mActivities.contains(activity)) {
-            activity.finish();
-            mActivities.remove(activity);
-        }
-    }
-
 
     private void quit() {
         DataUtil.setToken("");
@@ -464,9 +462,11 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
     }
 
     @Override
-    public void getGroupMembers(String groupId, final RongIM.IGroupMemberCallback callback) {
-
+    public void getGroupMembers(final String groupId, final RongIM.IGroupMemberCallback callback) {
+        Logger.d("getGroupMembers");
+        callback.onGetGroupMembersResult(null);
     }
+
 
     private void hangUpWhenQuitGroup() {
         RongCallSession session = RongCallClient.getInstance().getCallSession();
