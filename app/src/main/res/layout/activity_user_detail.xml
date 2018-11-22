@@ -142,6 +142,20 @@
             android:text="@string/start_video"
             android:textColor="#363636"
             android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btn_delete_friend"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginLeft="14dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="14dp"
+            android:background="@drawable/contact_start_video"
+            android:onClick="deleteFriend"
+            android:text="@string/delete_friend"
+            android:visibility="gone"
+            android:textColor="#363636"
+            android:textSize="16sp" />
         <!--CallKit end-->
     </LinearLayout>
 

@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshLoadMoreListener;
@@ -21,6 +22,7 @@ import com.zgg.hochat.App;
 import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.FriendListAdapter;
 import com.zgg.hochat.base.BaseFragment;
+import com.zgg.hochat.bean.AddGroupMemberInput;
 import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.CreateGroupResult;
 import com.zgg.hochat.bean.Friend;
@@ -53,6 +55,7 @@ import java.util.List;
 import butterknife.BindView;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
+import io.rong.imkit.utilities.PromptPopupDialog;
 import io.rong.imlib.model.Group;
 import io.rong.imlib.model.UserInfo;
 
@@ -141,6 +144,7 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
 
     @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
+        Logger.d("fragment: receiveMsg");
         String message = event.getMessage();
         if (message.equals("group")) {
             groupsPresenter.getGroups();
@@ -153,15 +157,16 @@ public class ContactsFragment extends BaseFragment implements View.OnClickListen
     }
 
     private void showDia() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("您有新的好友请求，是否立即处理")
-                .setNegativeButton("取消", null)
-                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        PromptPopupDialog.newInstance(mContext,
+                "您有新的好友请求，是否立即处理?")
+                .setLayoutRes(io.rong.imkit.R.layout.rc_dialog_popup_prompt)
+                .setPromptButtonClickedListener(new PromptPopupDialog.OnPromptButtonClickedListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onPositiveButtonClicked() {
                         getContext().startActivity(new Intent(getContext(), NewFriendListActivity.class));
                     }
-                }).show();
+                })
+                .show();
     }
 
 

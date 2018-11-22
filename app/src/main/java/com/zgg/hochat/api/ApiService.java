@@ -103,6 +103,13 @@ public interface ApiService {
     @POST("friendship/agree")
     Call<BaseResult<ActionResult>> agree(@Body AgreeInput inviteInput);
 
+
+    /**
+     * 删除好友
+     */
+    @POST("friendship/delete")
+    Call<BaseResult<String>> deleteFriend(@Body AgreeInput input);
+
     /**
      * 获取好友列表
      *

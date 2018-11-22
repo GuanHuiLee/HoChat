@@ -24,6 +24,8 @@ public interface FriendRequestContract {
         void showInviteResult(ActionResult result);
 
         void showAgreeResult(ActionResult result);
+
+        void showDeleteFriendResult(String string);
     }
 
     abstract class Presenter extends BasePresenter<View, FriendShipModel> {
@@ -36,6 +38,8 @@ public interface FriendRequestContract {
         public abstract void invite(InviteInput params);
 
         public abstract void agree(AgreeInput params);
+
+        public abstract void deleteFriend(AgreeInput params);
 
     }
 

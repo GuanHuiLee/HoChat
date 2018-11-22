@@ -14,6 +14,7 @@ import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.zgg.hochat.api.ApiFactory;
 import com.zgg.hochat.base.BaseResult;
+import com.zgg.hochat.bean.ChatChangeEvent;
 import com.zgg.hochat.bean.ContactNotificationMessageData;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.bean.GetGroupDetailResult;
@@ -222,7 +223,6 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
     @Override
     public boolean onReceived(Message message, int i) {
         MessageContent messageContent = message.getContent();
-        Logger.d("onReceived msg");
         if (messageContent instanceof ContactNotificationMessage) {
             ContactNotificationMessage contactNotificationMessage = (ContactNotificationMessage) messageContent;
             Logger.d(contactNotificationMessage.getOperation());
@@ -248,7 +248,6 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
             }*/
         } else if (messageContent instanceof GroupNotificationMessage) {
             GroupNotificationMessage groupNotificationMessage = (GroupNotificationMessage) messageContent;
-            Logger.d("onReceived:" + groupNotificationMessage.getMessage());
             String groupID = message.getTargetId();
             GroupNotificationMessageData data = null;
             try {
@@ -259,10 +258,11 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
                     e.printStackTrace();
                 }
                 if (groupNotificationMessage.getOperation().equals("Create")) {    //创建群组
-                    EventBus.getDefault().post(new MessageEvent(""));
+                    EventBus.getDefault().post(new MessageEvent("group"));
                 } else if (groupNotificationMessage.getOperation().equals("Dismiss")) {    //解散群组
                     hangUpWhenQuitGroup();      //挂断电话
                     handleGroupDismiss(groupID);
+                    closeChatWindow();
                 } else if (groupNotificationMessage.getOperation().equals("Kicked")) {       //群组踢人
 
                     if (data != null) {
@@ -271,6 +271,7 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
                             for (String userId : memberIdList) {
                                 if (currentID.equals(userId)) {
                                     hangUpWhenQuitGroup();
+                                    closeChatWindow();
                                     RongIM.getInstance().removeConversation(Conversation.ConversationType.GROUP, message.getTargetId(), new RongIMClient.ResultCallback<Boolean>() {
                                         @Override
                                         public void onSuccess(Boolean aBoolean) {
@@ -321,6 +322,10 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
             //ImageMessage imageMessage = (ImageMessage) messageContent;
         }
         return false;
+    }
+
+    private void closeChatWindow() {
+        EventBus.getDefault().post(new ChatChangeEvent(""));
     }
 
     private void handleGroupDismiss(final String groupID) {
@@ -383,7 +388,7 @@ public class AppContext implements RongIM.ConversationListBehaviorListener,
             return false;
         }
         //开发测试时,发送系统消息的userInfo只有id不为空
-        if (userInfo != null && userInfo.getName() != null && userInfo.getPortraitUri() != null) {
+        if (userInfo != null && userInfo.getName() != null ) {
             Intent intent = new Intent(context, UserDetailActivity.class);
             intent.putExtra("conversationType", conversationType.getValue());
             Friend friend = CharacterParser.getInstance().generateFriendFromUserInfo(userInfo);

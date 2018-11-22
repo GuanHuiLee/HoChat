@@ -58,6 +58,7 @@ import butterknife.BindView;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
+import io.rong.imkit.utilities.PromptPopupDialog;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.UserInfo;
 import retrofit2.HttpException;
@@ -308,13 +309,12 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
             } else if (deleteGroupMemberList != null && startDisList != null && sourceDataList.size() > 0) {//删除群成员
                 tv_ok.setClickable(true);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("确认移除群成员?")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                PromptPopupDialog.newInstance(mContext,
+                        "确认移除该群成员?")
+                        .setLayoutRes(io.rong.imkit.R.layout.rc_dialog_popup_prompt)
+                        .setPromptButtonClickedListener(new PromptPopupDialog.OnPromptButtonClickedListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                            public void onPositiveButtonClicked() {
                                 showProgress("移除中");
                                 groupMemberPresenter.kickGroupMembers(new AddGroupMemberInput(groupId, startDisList));
                             }

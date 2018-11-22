@@ -1,9 +1,6 @@
 package com.zgg.hochat.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -13,35 +10,31 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.zgg.hochat.App;
 import com.zgg.hochat.R;
-import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
+import com.zgg.hochat.bean.ActionResult;
+import com.zgg.hochat.bean.AgreeInput;
 import com.zgg.hochat.bean.AllFriendsResult;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.http.contract.AllFriendsContract;
+import com.zgg.hochat.http.contract.FriendRequestContract;
 import com.zgg.hochat.http.model.FriendShipModel;
 import com.zgg.hochat.http.presenter.AllFriendsPresenter;
+import com.zgg.hochat.http.presenter.FriendRequestPresenter;
 import com.zgg.hochat.utils.DataUtil;
 import com.zgg.hochat.utils.PortraitUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.BindView;
-import io.rong.callkit.RongCallAction;
-import io.rong.callkit.RongVoIPIntent;
-import io.rong.calllib.RongCallClient;
-import io.rong.calllib.RongCallCommon;
-import io.rong.calllib.RongCallSession;
 import io.rong.imageloader.core.ImageLoader;
 import io.rong.imkit.RongIM;
-import io.rong.imlib.model.Conversation;
+import io.rong.imkit.utilities.PromptPopupDialog;
 import io.rong.imlib.model.UserInfo;
 
 //CallKit start 1
@@ -51,7 +44,7 @@ import io.rong.imlib.model.UserInfo;
  * Created by tiankui on 16/11/2.
  */
 
-public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener, AllFriendsContract.View {
+public class UserDetailActivity extends BaseToolbarActivity implements View.OnClickListener, AllFriendsContract.View, FriendRequestContract.View {
     @BindView(R.id.contact_top)
     TextView mUserDisplayName;
     @BindView(R.id.contact_below)
@@ -68,6 +61,8 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     ImageView mUserPortrait;
     @BindView(R.id.ac_ll_note_name)
     LinearLayout mNoteNameLinearLayout;
+    @BindView(R.id.btn_delete_friend)
+    Button btn_delete_friend;
 
     private static final int SYNC_FRIEND_INFO = 129;
 
@@ -84,6 +79,7 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     private static final int CLICK_CONTACT_FRAGMENT_FRIEND = 2;
 
     private AllFriendsPresenter presenter;
+    private FriendRequestPresenter friendRequestPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +98,8 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     protected void initData() {
         presenter = new AllFriendsPresenter(this, FriendShipModel.newInstance());
         addPresenter(presenter);
+        friendRequestPresenter = new FriendRequestPresenter(this, FriendShipModel.newInstance());
+        addPresenter(friendRequestPresenter);
 
         mType = getIntent().getIntExtra("type", 0);
         mGroupName = getIntent().getStringExtra("groupName");
@@ -109,6 +107,9 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
         if (mFriend != null) {
             presenter.getAllFriends();
+            if (!mFriend.getUserId().equals(DataUtil.getUserId()) && mType != CLICK_CONVERSATION_USER_PORTRAIT) {
+                btn_delete_friend.setVisibility(View.VISIBLE);
+            }
             if (mFriend.isExitsDisplayName()) {
                 mUserNickName.setVisibility(View.VISIBLE);
                 mUserNickName.setText(getString(R.string.ac_contact_nick_name) + "：" + mFriend.getName());
@@ -158,7 +159,7 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
 
     //CallKit start 2
     public void startVoice(View view) {
-        showError("正在开发中");
+        showError("正在开发中，敬请期待！");
 
 
 //        RongCallSession profile = RongCallClient.getInstance().getCallSession();
@@ -188,7 +189,7 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     }
 
     public void startVideo(View view) {
-        showError("正在开发中");
+        showError("正在开发中，敬请期待！");
 
 //        RongCallSession profile = RongCallClient.getInstance().getCallSession();
 //        if (profile != null && profile.getActiveTime() > 0) {
@@ -295,5 +296,36 @@ public class UserDetailActivity extends BaseToolbarActivity implements View.OnCl
     @Override
     public void showSetDisplayNameResult(String str) {
 
+    }
+
+    public void deleteFriend(View view) {
+        PromptPopupDialog.newInstance(mContext,
+                "是否确认删除好友")
+                .setLayoutRes(io.rong.imkit.R.layout.rc_dialog_popup_prompt)
+                .setPromptButtonClickedListener(new PromptPopupDialog.OnPromptButtonClickedListener() {
+                    @Override
+                    public void onPositiveButtonClicked() {
+                        showProgress("删除中");
+                        friendRequestPresenter.deleteFriend(new AgreeInput(mFriend.getUserId()));
+                    }
+                }).show();
+
+    }
+
+    @Override
+    public void showInviteResult(ActionResult result) {
+
+    }
+
+    @Override
+    public void showAgreeResult(ActionResult result) {
+
+    }
+
+    @Override
+    public void showDeleteFriendResult(String string) {
+        showError(string);
+        finish();
+        EventBus.getDefault().post(new MessageEvent(""));
     }
 }

@@ -69,4 +69,26 @@ public class FriendRequestPresenter extends FriendRequestContract.Presenter {
             }
         });
     }
+
+    @Override
+    public void deleteFriend(AgreeInput params) {
+        model.deleteFriend(params, new MyCallBack<BaseResult<String>>() {
+            @Override
+            public void onSuc(Response<BaseResult<String>> response) {
+                if (isAttach) {
+                    BaseResult<String> body = response.body();
+                    int code = body.getCode();
+                    if (code == 200) {
+                        view.showDeleteFriendResult("删除成功");
+                    } else view.showError("删除失败" + code);
+                }
+            }
+
+            @Override
+            public void onFail(String message) {
+                if (isAttach)
+                    view.showError(message);
+            }
+        });
+    }
 }

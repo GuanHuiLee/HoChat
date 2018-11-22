@@ -3,7 +3,6 @@ package com.zgg.hochat.ui.activity;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,32 +11,29 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
+import com.orhanobut.logger.Logger;
 import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseActivity;
-import com.zgg.hochat.base.BaseToolbarActivity;
-import com.zgg.hochat.bean.GroupMember;
+import com.zgg.hochat.bean.ChatChangeEvent;
 import com.zgg.hochat.ui.fragment.ConversationFragmentEx;
 import com.zgg.hochat.utils.DataUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
 import io.rong.callkit.RongCallKit;
 import io.rong.imkit.RongIM;
-import io.rong.imkit.RongKitIntent;
 import io.rong.imkit.fragment.UriFragment;
 import io.rong.imkit.userInfoCache.RongUserInfoManager;
 import io.rong.imlib.MessageTag;
@@ -100,6 +96,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.conversation);
         setSupportActionBar(toolbar);
+        EventBus.getDefault().register(this);
 
         Intent intent = getIntent();
 
@@ -511,6 +508,13 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
 
     }
 
+    @Subscribe(threadMode = org.greenrobot.eventbus.ThreadMode.MAIN)
+    public void onMessageEvent(ChatChangeEvent event) {
+        Logger.d("activity: receiveMsg");
+        showError("会话结束");
+        finish();
+    }
+
     @Override
     protected void onDestroy() {
         //CallKit start 3
@@ -518,6 +522,7 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
         //CallKit end 3
 
         RongIMClient.setTypingStatusListener(null);
+        EventBus.getDefault().unregister(this);
         super.onDestroy();
     }
 

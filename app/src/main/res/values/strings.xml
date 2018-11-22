@@ -14,6 +14,7 @@
     <string name="start_voice">语音通话</string>
     <string name="add_friend">添加好友</string>
     <string name="start_video">视频聊天</string>
+    <string name="delete_friend">删除好友</string>
     <string name="ac_contact_nick_name">昵称</string>
     <string name="main_customer">意见反馈</string>
     <string name="de_actionbar_system">"系统消息"</string>

@@ -60,4 +60,7 @@ public class FriendShipModel extends BaseModel {
     public void getUserInfoById(String id, MyCallBack callBack) {
         ApiFactory.getService().getUserInfoById(id).enqueue(callBack);
     }
+    public void deleteFriend(AgreeInput inviteInput, MyCallBack callBack) {
+        ApiFactory.getService().deleteFriend(inviteInput).enqueue(callBack);
+    }
 }

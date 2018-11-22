@@ -178,4 +178,9 @@ public class NewFriendListActivity extends BaseToolbarActivity implements
         presenter.getAllFriends();
         EventBus.getDefault().post(new MessageEvent("agree"));
     }
+
+    @Override
+    public void showDeleteFriendResult(String string) {
+
+    }
 }

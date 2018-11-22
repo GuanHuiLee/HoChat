@@ -9,11 +9,14 @@ import com.zgg.hochat.R;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.InviteInput;
 import com.zgg.hochat.bean.ActionResult;
+import com.zgg.hochat.bean.MessageEvent;
 import com.zgg.hochat.http.contract.FriendRequestContract;
 import com.zgg.hochat.http.model.FriendShipModel;
 import com.zgg.hochat.http.presenter.FriendRequestPresenter;
 import com.zgg.hochat.utils.ClearEditTextView;
 import com.zgg.hochat.utils.DataUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -61,7 +64,8 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
         String msg = "";
         switch (result.getAction()) {
             case "Added":
-                msg = "已添加";
+                msg = "已添加好友";
+                EventBus.getDefault().post(new MessageEvent(""));
                 break;
             case "None":
                 msg = "在对方黑名单中";
@@ -76,6 +80,11 @@ public class VerifyUserActivity extends BaseToolbarActivity implements FriendReq
 
     @Override
     public void showAgreeResult(ActionResult result) {
+
+    }
+
+    @Override
+    public void showDeleteFriendResult(String string) {
 
     }
 }

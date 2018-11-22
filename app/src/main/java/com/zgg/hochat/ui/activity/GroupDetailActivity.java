@@ -221,25 +221,24 @@ public class GroupDetailActivity extends BaseToolbarActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.group_quit:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-                builder.setTitle("是否确认退出群组")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                PromptPopupDialog.newInstance(mContext,
+                        "是否确认退出群组")
+                        .setLayoutRes(io.rong.imkit.R.layout.rc_dialog_popup_prompt)
+                        .setPromptButtonClickedListener(new PromptPopupDialog.OnPromptButtonClickedListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                showProgress("退出中");
+                            public void onPositiveButtonClicked() {
+                                showProgress("退出群组中");
                                 groupsPresenter.quitGroup(new QuitGroupInput(fromConversationId));
                             }
                         }).show();
                 break;
             case R.id.group_dismiss:
-                AlertDialog.Builder builder1 = new AlertDialog.Builder(this);
-                builder1.setTitle("是否确认解散群组")
-                        .setNegativeButton("取消", null)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                PromptPopupDialog.newInstance(mContext,
+                        "是否确认解散群组")
+                        .setLayoutRes(io.rong.imkit.R.layout.rc_dialog_popup_prompt)
+                        .setPromptButtonClickedListener(new PromptPopupDialog.OnPromptButtonClickedListener() {
                             @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
+                            public void onPositiveButtonClicked() {
                                 showProgress("解散群组中");
                                 groupsPresenter.dismissGroup(new QuitGroupInput(fromConversationId));
                             }
