@@ -17,4 +17,5 @@ public class Constant {
     public static final String USER_PORTRAIT = "user_portrait";// 用户头像
     public static final String COOKIE = "cookie";
     public static final String FRIENDS_CHANGE = "friends_change";
+    public static final String BUGLY_APPID = "84c6df8993";
 }

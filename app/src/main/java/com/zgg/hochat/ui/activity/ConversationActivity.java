@@ -503,7 +503,8 @@ public class ConversationActivity extends BaseActivity implements View.OnClickLi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            finish();
+            if (requestCode == 500)
+                finish();
         }
 
     }

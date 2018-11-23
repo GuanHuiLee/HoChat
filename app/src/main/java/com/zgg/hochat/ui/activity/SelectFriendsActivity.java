@@ -30,11 +30,14 @@ import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.base.BaseToolbarActivity;
 import com.zgg.hochat.bean.AddGroupMemberInput;
 import com.zgg.hochat.bean.AllFriendsResult;
+import com.zgg.hochat.bean.FindUserResult;
 import com.zgg.hochat.bean.Friend;
 import com.zgg.hochat.bean.GetGroupMembersResult;
+import com.zgg.hochat.bean.GetUserInfoByIdResult;
 import com.zgg.hochat.bean.GroupMember;
 import com.zgg.hochat.bean.QuitGroupInput;
 import com.zgg.hochat.http.contract.AllFriendsContract;
+import com.zgg.hochat.http.contract.FindUserContract;
 import com.zgg.hochat.http.contract.GroupMemberContract;
 import com.zgg.hochat.http.model.FriendShipModel;
 import com.zgg.hochat.http.model.GroupModel;
@@ -67,7 +70,8 @@ import retrofit2.HttpException;
  * Created by AMing on 16/1/21.
  * Company RongCloud
  */
-public class SelectFriendsActivity extends BaseActivity implements AllFriendsContract.View, GroupMemberContract.View {
+public class SelectFriendsActivity extends BaseActivity implements AllFriendsContract.View, GroupMemberContract.View
+        , FindUserContract.View {
 
     private static final int ADD_GROUP_MEMBER = 21;
     private static final int DELETE_GROUP_MEMBER = 23;
@@ -350,7 +354,13 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
             } else {//讨论组一个好友，直接单聊
 
                 if (startDisList != null && startDisList.size() == 1) {
-                    RongIM.getInstance().startPrivateChat(mContext, startDisList.get(0), "");
+                    Friend mFriend = createGroupList.get(0);
+                    String displayName = mFriend.getDisplayName();
+                    if (!TextUtils.isEmpty(displayName)) {
+                        RongIM.getInstance().startPrivateChat(mContext, mFriend.getUserId(), displayName);
+                    } else {
+                        RongIM.getInstance().startPrivateChat(mContext, mFriend.getUserId(), mFriend.getName());
+                    }
                 } else if (startDisList.size() > 1) {
 
                     String disName;
@@ -384,7 +394,7 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
                 }
             }
         } else {
-            Toast.makeText(SelectFriendsActivity.this, "无数据", Toast.LENGTH_SHORT).show();
+            showError("无数据");
         }
     }
 
@@ -557,6 +567,16 @@ public class SelectFriendsActivity extends BaseActivity implements AllFriendsCon
         showError(result);
         setResult(RESULT_OK);
         finish();
+    }
+
+    @Override
+    public void showFindUserByPhoneResult(FindUserResult result) {
+
+    }
+
+    @Override
+    public void showFindUserInfoByIdResult(GetUserInfoByIdResult result) {
+
     }
 
 

@@ -15,11 +15,14 @@ import com.scwang.smartrefresh.layout.api.RefreshHeader;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
+import com.tencent.bugly.Bugly;
 import com.tencent.mmkv.MMKV;
 import com.zgg.hochat.bean.TestMessage;
 import com.zgg.hochat.common.AppContext;
+import com.zgg.hochat.common.BuglyManager;
 import com.zgg.hochat.common.ContactNotificationMessageProvider;
 import com.zgg.hochat.common.TestMessageProvider;
+import com.zgg.hochat.utils.Constant;
 
 import io.rong.imageloader.core.DisplayImageOptions;
 import io.rong.imageloader.core.display.FadeInBitmapDisplayer;
@@ -62,6 +65,8 @@ public class App extends Application {
             }
         }
         MMKV.initialize(this);
+
+        BuglyManager.getInstance().initBugly(mApp);
 
         options = new DisplayImageOptions.Builder()
                 .showImageForEmptyUri(R.drawable.de_default_portrait)

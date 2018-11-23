@@ -1,13 +1,11 @@
 package com.zgg.hochat.ui.activity;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -21,8 +19,6 @@ import com.zgg.hochat.R;
 import com.zgg.hochat.adapter.ConversationListAdapterEx;
 import com.zgg.hochat.base.BaseActivity;
 import com.zgg.hochat.ui.fragment.ContactsFragment;
-import com.zgg.hochat.ui.fragment.ConversationFragmentEx;
-import com.zgg.hochat.ui.fragment.DiscoverFragment;
 import com.zgg.hochat.ui.fragment.MineFragment;
 import com.zgg.hochat.utils.Constant;
 import com.zgg.hochat.utils.DataUtil;
@@ -90,6 +86,8 @@ public class MainActivity extends BaseActivity implements IUnReadMessageObserver
 
     @Override
     protected void initData() {
+
+
         fragmentManager = getSupportFragmentManager();
         conversationList = initConversationList();
 
